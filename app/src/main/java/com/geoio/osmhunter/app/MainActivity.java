@@ -72,6 +72,10 @@ public class MainActivity extends Activity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_location) {
+            if(myLocationOverlay.getMyLocation() != null) {
+                mapView.getController().animateTo(myLocationOverlay.getMyLocation());
+            }
         }
         return super.onOptionsItemSelected(item);
     }
