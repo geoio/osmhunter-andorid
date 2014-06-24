@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 
+import com.geoio.osmhunter.app.Workarounds.MyMapView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity {
 
-    private MapView mapView;
+    private MyMapView mapView;
     private UserLocationOverlay myLocationOverlay;
 
     @Override
@@ -44,7 +45,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mapView = (MapView) this.findViewById(R.id.mapview);
+        mapView = (MyMapView) this.findViewById(R.id.mapview);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setMultiTouchControls(true);
         mapView.getController().setZoom(18);
