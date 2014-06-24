@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 
 import com.geoio.osmhunter.app.Workarounds.MyMapView;
+import com.geoio.osmhunter.app.Workarounds.UserLocationOverlay;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -87,25 +88,6 @@ public class MainActivity extends Activity {
         myLocationOverlay.enableMyLocation();
         myLocationOverlay.setDrawAccuracyEnabled(true);
         mapView.getOverlays().add(myLocationOverlay);
-    }
-
-    // compiling library projects is horrible, so here's a simple fix for runOnFirstFix
-    public class UserLocationOverlay extends MyLocationNewOverlay {
-        private boolean noFix = true;
-
-        public UserLocationOverlay(Context context, MapView mapView) {
-            super(context, mapView);
-        }
-
-        @Override
-        public void onLocationChanged(Location location, IMyLocationProvider source) {
-            super.onLocationChanged(location, source);
-
-            if(location != null && noFix) {
-                mapView.getController().setCenter(new GeoPoint(location));
-                noFix = false;
-            }
-        }
     }
 
 
