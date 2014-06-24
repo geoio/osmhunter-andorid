@@ -2,6 +2,7 @@ package com.geoio.osmhunter.app;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
@@ -168,7 +169,9 @@ public class MainActivity extends Activity {
                 Projection pj = mapView.getProjection();
                 GeoPoint position = (GeoPoint)pj.fromPixels((int)event.getX(), (int)event.getY());
                 try {
-                    Log.v("touch", house.getString("id"));
+                    Intent intent = new Intent(getApplicationContext(), AttributeChangeActivity.class);
+                    intent.putExtra("id", house.getString("id"));
+                    startActivity(intent);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
