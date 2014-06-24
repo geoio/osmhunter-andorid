@@ -8,22 +8,9 @@
     android:orientation="vertical"
     tools:context="com.geoio.osmhunter.app.AttributeChangeActivity">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10pt"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Label"
-            android:layout_marginBottom="3pt"
-            style="?android:attr/listSeparatorTextViewStyle" />
-
-        <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+    <ListView
+        android:id="@+id/attributes_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
