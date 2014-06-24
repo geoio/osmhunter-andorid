@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -31,8 +29,6 @@ import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.Projection;
-import org.osmdroid.views.overlay.mylocation.IMyLocationProvider;
-import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 
@@ -72,13 +68,14 @@ public class MainActivity extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_location) {
-            if(myLocationOverlay.getMyLocation() != null) {
-                mapView.getController().animateTo(myLocationOverlay.getMyLocation());
-            }
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_location:
+                if(myLocationOverlay.getMyLocation() != null) {
+                    mapView.getController().animateTo(myLocationOverlay.getMyLocation());
+                }
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
