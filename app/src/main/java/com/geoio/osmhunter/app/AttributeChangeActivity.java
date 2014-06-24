@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -101,13 +102,24 @@ public class AttributeChangeActivity extends Activity {
                         JSONObject attribute = result.getJSONObject(i);
                         String type = attribute.getString("type");
 
-                        if(type.equals("text")) {
+                        if(type.equals("text") || type.equals("url") || type.equals("phone")) {
                             View elem = inflater.inflate(R.layout.attribute_change_item, null);
                             TextView label = (TextView) elem.findViewById(R.id.label);
                             EditText input = (EditText) elem.findViewById(R.id.input);
 
-                            label.setText(attribute.getString("label"));
-                            input.setText(attribute.getString("value"));
+                            String labelText = attribute.getString("label");
+                            String valueText = attribute.getString("value");
+
+                            label.setText(labelText);
+                            if(!valueText.equals("null")) {
+                                input.setText(valueText);
+                            }
+
+                            if(type.equals("url")) {
+                                input.setRawInputType(InputType.TYPE_TEXT_VARIATION_URI);
+                            } else if(type.equals("phone")) {
+                                input.setRawInputType(InputType.TYPE_CLASS_PHONE);
+                            }
 
                             list_layout.addView(elem);
                         }
