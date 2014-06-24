@@ -3,6 +3,7 @@ package com.geoio.osmhunter.app;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.Projection;
+import org.osmdroid.views.overlay.mylocation.IMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
 
     private MapView mapView;
-    private MyLocationNewOverlay myLocationOverlay;
+    private UserLocationOverlay myLocationOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class MainActivity extends Activity {
         mapView = (MapView) this.findViewById(R.id.mapview);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setMultiTouchControls(true);
-        mapView.getController().setZoom(16);
+        mapView.getController().setZoom(18);
 
         showPositionOverlay();
 
@@ -76,15 +78,29 @@ public class MainActivity extends Activity {
 
     // show current position
     private void showPositionOverlay() {
-        myLocationOverlay = new MyLocationNewOverlay(this, mapView);
+        myLocationOverlay = new UserLocationOverlay(this, mapView);
         myLocationOverlay.enableMyLocation();
         myLocationOverlay.setDrawAccuracyEnabled(true);
         mapView.getOverlays().add(myLocationOverlay);
-        /*myLocationOverlay.runOnFirstFix(new Runnable() {
-            public void run() {
-                mapView.getController().animateTo(myLocationOverlay.getMyLocation());
+    }
+
+    // compiling library projects is horrible, so here's a simple fix for runOnFirstFix
+    public class UserLocationOverlay extends MyLocationNewOverlay {
+        private boolean noFix = true;
+
+        public UserLocationOverlay(Context context, MapView mapView) {
+            super(context, mapView);
+        }
+
+        @Override
+        public void onLocationChanged(Location location, IMyLocationProvider source) {
+            super.onLocationChanged(location, source);
+
+            if(location != null && noFix) {
+                mapView.getController().setCenter(new GeoPoint(location));
+                noFix = false;
             }
-        });*/
+        }
     }
 
 
@@ -104,7 +120,7 @@ public class MainActivity extends Activity {
         b.appendQueryParameter("west", String.valueOf(l1.getLongitude()));
         b.appendQueryParameter("north", String.valueOf(l2.getLatitude()));
         b.appendQueryParameter("east", String.valueOf(l2.getLongitude()));
-        b.appendQueryParameter("limit", "2");
+        b.appendQueryParameter("limit", "6");
         String url = b.build().toString();
 
         // fire http
