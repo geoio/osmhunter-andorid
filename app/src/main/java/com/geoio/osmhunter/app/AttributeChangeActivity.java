@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -103,7 +105,7 @@ public class AttributeChangeActivity extends Activity {
                         String type = attribute.getString("type");
 
                         if(type.equals("text") || type.equals("url") || type.equals("phone")) {
-                            View elem = inflater.inflate(R.layout.attribute_change_item, null);
+                            View elem = inflater.inflate(R.layout.activity_attribute_change_item_text, null);
                             TextView label = (TextView) elem.findViewById(R.id.label);
                             EditText input = (EditText) elem.findViewById(R.id.input);
 
@@ -120,6 +122,35 @@ public class AttributeChangeActivity extends Activity {
                             } else if(type.equals("phone")) {
                                 input.setRawInputType(InputType.TYPE_CLASS_PHONE);
                             }
+
+                            list_layout.addView(elem);
+                        } else if(type.equals("select")) {
+                            View elem = inflater.inflate(R.layout.activity_attribute_change_item_spinner, null);
+                            TextView label = (TextView) elem.findViewById(R.id.label);
+                            Spinner spinner = (Spinner) elem.findViewById(R.id.spinner);
+                            JSONArray options = attribute.getJSONArray("options");
+
+                            label.setText(attribute.getString("label"));
+
+                            ArrayList<String> items = new ArrayList<String>();
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item);
+
+                            /*if(attribute.getBoolean("allow_empty")) {
+                                items.add("");  // empty
+                            }*/
+
+                            Integer selected = 0;
+                            for(int a = 0; a < options.length(); a++) {
+                                JSONObject option = options.getJSONObject(a);
+                                if(option.getString("value").equals(attribute.getString("value"))) {
+                                    selected = a;
+                                }
+                                items.add(option.getString("label"));
+                            }
+
+                            adapter.addAll(items);
+                            spinner.setAdapter(adapter);
+                            spinner.setSelection(selected);
 
                             list_layout.addView(elem);
                         }
