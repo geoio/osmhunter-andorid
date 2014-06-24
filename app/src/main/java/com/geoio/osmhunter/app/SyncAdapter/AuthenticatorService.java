@@ -4,8 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import com.geoio.osmhunter.app.SyncAdapter.Authenticator;
-
 public class AuthenticatorService extends Service {
     // Instance field that stores the authenticator object
     private Authenticator mAuthenticator;
