@@ -3,17 +3,29 @@ package com.geoio.osmhunter.app.SyncAdapter;
 import android.accounts.AbstractAccountAuthenticator;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorResponse;
+import android.accounts.AccountManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.geoio.osmhunter.app.LoginActivity;
+
 public class Authenticator extends AbstractAccountAuthenticator {
-    public Authenticator(Context context) {
-        super(context);
+    private Context context;
+
+    public Authenticator(Context ctx) {
+        super(ctx);
+        context = ctx;
     }
 
     @Override
     public Bundle addAccount(AccountAuthenticatorResponse response, String accountType, String authTokenType, String[] requiredFeatures, Bundle options) {
-        throw new UnsupportedOperationException();
+        Intent intent = new Intent(context, LoginActivity.class);
+        
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(AccountManager.KEY_INTENT, intent);
+
+        return bundle;
     }
 
     @Override

@@ -15,12 +15,11 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
-        <service
-            android:name="com.geoio.osmhunter.app.SyncAdapter.AuthenticatorService">
+        <service android:name="com.geoio.osmhunter.app.SyncAdapter.AuthenticatorService" >
             <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator"/>
+                <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
@@ -35,13 +34,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.geoio.osmhunter.app.AttributeChangeActivity"
             android:label="@string/title_activity_attribute_change"
             android:parentActivityName="com.geoio.osmhunter.app.MainActivity" >
         </activity>
-
+        <activity
+            android:name="com.geoio.osmhunter.app.LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
     </application>
 
 </manifest>
