@@ -5,10 +5,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -23,23 +26,20 @@ import java.util.List;
 
 
 public class AttributeChangeActivity extends Activity {
-
-    private ListView attributes_list_view;
     List<JSONObject> attributes_list = new ArrayList<JSONObject>();
-    AttributeChangeAdapter attribute_adapter;
+    LayoutInflater inflater;
+    LinearLayout list_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attribute_change);
 
+        inflater = LayoutInflater.from(this);
+        list_layout = (LinearLayout) this.findViewById(R.id.list);
+
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
-
-        attribute_adapter = new AttributeChangeAdapter(this, attributes_list);
-
-        attributes_list_view = (ListView) this.findViewById(R.id.attributes_list);
-        attributes_list_view.setAdapter(attribute_adapter);
 
         updateAttributesList(id);
 
@@ -86,8 +86,6 @@ public class AttributeChangeActivity extends Activity {
             url += "/";
         }
 
-        Log.v("x", url);
-
         // fire http
         client.get(url, null, new JsonHttpResponseHandler() {
             @Override
@@ -97,15 +95,23 @@ public class AttributeChangeActivity extends Activity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
-                    List<JSONObject> attributes_list_buffer = new ArrayList<JSONObject>();
                     JSONArray result = response.getJSONArray("result");
 
                     for(int i = 0; i < result.length(); i++) {
-                        attributes_list_buffer.add(result.getJSONObject(i));
-                    }
+                        JSONObject attribute = result.getJSONObject(i);
+                        String type = attribute.getString("type");
 
-                    attributes_list.addAll(attributes_list_buffer);
-                    attribute_adapter.notifyDataSetChanged();
+                        if(type.equals("text")) {
+                            View elem = inflater.inflate(R.layout.attribute_change_item, null);
+                            TextView label = (TextView) elem.findViewById(R.id.label);
+                            EditText input = (EditText) elem.findViewById(R.id.input);
+
+                            label.setText(attribute.getString("label"));
+                            input.setText(attribute.getString("value"));
+
+                            list_layout.addView(elem);
+                        }
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
