@@ -100,7 +100,7 @@ public class MainActivity extends Activity {
         GeoPoint l2 = new GeoPoint(bb.getLatNorthE6(), bb.getLonEastE6());
 
         // build url
-        b.path("/buildings/");
+        b.appendPath("buildings");
         b.appendQueryParameter("south", String.valueOf(l1.getLatitude()));
         b.appendQueryParameter("west", String.valueOf(l1.getLongitude()));
         b.appendQueryParameter("north", String.valueOf(l2.getLatitude()));

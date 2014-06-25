@@ -42,7 +42,8 @@ public class LoginActivity extends AccountAuthenticatorActivity {
         AsyncHttpClient client = new AsyncHttpClient();
 
         // build url
-        b.path("/user/signup/");
+        b.appendPath("user");
+        b.appendPath("signup");
         signup_url = b.build().toString();
 
         client.get(signup_url, null, new JsonHttpResponseHandler() {

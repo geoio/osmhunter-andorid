@@ -4,7 +4,7 @@
     <string name="app_name">OSMHunter</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="geoio_api_url">http://osmhunter.felixwittmann.de</string>
+    <string name="geoio_api_url">https://osmhunter.geo.io/api/v1/</string>
     <string name="title_activity_attribute_change">AttributeChangeActivity</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="authenticator_account_type">com.geoio.osmhunter.authenticate</string>
