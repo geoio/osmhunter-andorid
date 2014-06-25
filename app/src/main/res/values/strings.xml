@@ -7,5 +7,6 @@
     <string name="geoio_api_url">http://osmhunter.felixwittmann.de</string>
     <string name="title_activity_attribute_change">AttributeChangeActivity</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="authenticator_account_type">com.geoio.osmhunter.authenticate</string>
 
 </resources>

@@ -7,6 +7,7 @@ import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.geoio.osmhunter.app.LoginActivity;
 
@@ -40,7 +41,19 @@ public class Authenticator extends AbstractAccountAuthenticator {
 
     @Override
     public Bundle getAuthToken(AccountAuthenticatorResponse response, Account account, String authTokenType, Bundle options) {
-        throw new UnsupportedOperationException();
+        AccountManager am = AccountManager.get(context);
+        String token = am.peekAuthToken(account, authTokenType);
+
+        if(!TextUtils.isEmpty(token)) {
+            Bundle result = new Bundle();
+            result.putString(AccountManager.KEY_AUTHTOKEN, token);
+            return result;
+        }
+
+        Intent intent = new Intent(context, LoginActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(AccountManager.KEY_INTENT, intent);
+        return bundle;
     }
 
     @Override
