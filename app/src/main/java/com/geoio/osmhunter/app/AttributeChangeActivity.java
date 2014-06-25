@@ -1,7 +1,6 @@
 package com.geoio.osmhunter.app;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class AttributeChangeActivity extends Activity {
+public class AttributeChangeActivity extends HunterActivity {
     List<JSONObject> attributes_list = new ArrayList<JSONObject>();
     LayoutInflater inflater;
     LinearLayout list_layout;
@@ -72,6 +71,10 @@ public class AttributeChangeActivity extends Activity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void accountReady() {
     }
 
     private void updateAttributesList(String id) {

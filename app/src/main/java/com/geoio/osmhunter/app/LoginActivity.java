@@ -51,6 +51,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 // please do anything!
             }
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
@@ -67,7 +68,6 @@ public class LoginActivity extends AccountAuthenticatorActivity {
             }
         });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -136,7 +136,8 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 
                                     account_data.putInt("osm_id", result.getInt("osm_id"));
 
-                                    am.addAccountExplicitly(account, result.getString("apikey"), account_data);
+                                    am.addAccountExplicitly(account, "", account_data);
+                                    am.setAuthToken(account, "", result.getString("apikey"));
 
                                     // return the user
                                     Intent intent = new Intent();

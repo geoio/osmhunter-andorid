@@ -1,6 +1,5 @@
 package com.geoio.osmhunter.app;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -33,7 +32,7 @@ import org.osmdroid.views.Projection;
 import java.util.ArrayList;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends HunterActivity {
 
     private MyMapView mapView;
     private UserLocationOverlay myLocationOverlay;
@@ -53,7 +52,6 @@ public class MainActivity extends Activity {
         MyMapListener mListener = new MyMapListener();
         mapView.setMapListener(new DelayedMapListener(mListener));
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
