@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.geoio.osmhunter.app.SyncAdapter.HunterActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -82,7 +83,7 @@ public class AttributeChangeActivity extends HunterActivity {
         AsyncHttpClient client = new AsyncHttpClient();
 
         // build url
-        b.path("/buildings/");
+        b.appendPath("buildings");
         b.appendPath(id);
         b.appendPath("edit-form");
         String url = b.build().toString();
