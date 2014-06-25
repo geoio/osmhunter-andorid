@@ -87,11 +87,6 @@ public class AttributeChangeActivity extends HunterActivity {
         b.appendPath("edit-form");
         String url = b.build().toString();
 
-        // let's fix felix' pathes
-        if(!url.endsWith("/")) {
-            url += "/";
-        }
-
         // fire http
         client.get(url, null, new JsonHttpResponseHandler() {
             @Override
