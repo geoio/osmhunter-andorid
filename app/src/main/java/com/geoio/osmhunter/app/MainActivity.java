@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 
+import com.geoio.osmhunter.app.SyncAdapter.HunterActivity;
 import com.geoio.osmhunter.app.Workarounds.MyMapView;
 import com.geoio.osmhunter.app.Workarounds.UserLocationOverlay;
 import com.loopj.android.http.AsyncHttpClient;

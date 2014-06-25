@@ -1,4 +1,4 @@
-package com.geoio.osmhunter.app;
+package com.geoio.osmhunter.app.SyncAdapter;
 
 import android.accounts.AccountManager;
 import android.accounts.AccountManagerCallback;
@@ -7,6 +7,8 @@ import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.os.Bundle;
+
+import com.geoio.osmhunter.app.R;
 
 import java.io.IOException;
 
