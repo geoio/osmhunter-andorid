@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.geoio.osmhunter.app.FormFields.FormField;
 import com.geoio.osmhunter.app.SyncAdapter.HunterActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -32,6 +35,7 @@ public class AttributeChangeActivity extends HunterActivity {
     List<JSONObject> attributes_list = new ArrayList<JSONObject>();
     LayoutInflater inflater;
     LinearLayout list_layout;
+    private ArrayList<FormField> formFields = new ArrayList<FormField>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,9 @@ public class AttributeChangeActivity extends HunterActivity {
         switch(item.getItemId()) {
             case R.id.action_settings:
                 return true;
+            case R.id.action_save:
+                saveForm();
+                return true;
             case android.R.id.home:
                 finish();
                 return true;
@@ -78,7 +85,52 @@ public class AttributeChangeActivity extends HunterActivity {
     public void accountReady() {
     }
 
-    private void updateAttributesList(String id) {
+    private void saveForm() {
+        if(!accountReady) {
+            return;
+        }
+
+        JSONObject payload = new JSONObject();
+        JSONObject tags = null;
+        try {
+            payload.put("tags", new JSONObject());
+            tags = payload.getJSONObject("tags");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // get all forms
+        for(int i = 0; i < formFields.size(); i++) {
+            JSONObject options = formFields.get(i).options;
+            View view = formFields.get(i).view;
+
+            try {
+                if(options.getString("type").equals("select")) {
+                    Spinner spinnerView = (Spinner) view.findViewById(R.id.spinner);
+                    Integer selection = spinnerView.getSelectedItemPosition();
+                    if(options.getBoolean("allow_empty")) {
+                        selection -= 1;
+                    }
+                    String selectedValue = options.getJSONArray("options").getJSONObject(selection).getString("value");
+
+                    if(!selectedValue.equals(options.getString("value")))                           // value changed
+                        tags.put(options.getString("name"), selectedValue);
+
+                } else {
+                    EditText textView = (EditText) view.findViewById(R.id.input);
+                    if(!textView.getText().equals(options.getString("value")))                      // value changed
+                        if(!(TextUtils.isEmpty(textView.getText()) && options.isNull("value")))     // value did not changed and is null
+                            tags.put(options.getString("name"), textView.getText());
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Log.v("json", payload.toString());
+    }
+
+    private void updateAttributesList(final String id) {
         Uri.Builder b = Uri.parse(getString(R.string.geoio_api_url)).buildUpon();
         AsyncHttpClient client = new AsyncHttpClient();
 
@@ -102,9 +154,45 @@ public class AttributeChangeActivity extends HunterActivity {
                     for(int i = 0; i < result.length(); i++) {
                         JSONObject attribute = result.getJSONObject(i);
                         String type = attribute.getString("type");
+                        View elem = null;
+                        FormField field = null;
 
-                        if(type.equals("text") || type.equals("url") || type.equals("phone")) {
-                            View elem = inflater.inflate(R.layout.activity_attribute_change_item_text, null);
+                        if(type.equals("select")) {
+                            elem = inflater.inflate(R.layout.activity_attribute_change_item_spinner, null);
+                            field = new FormField(attribute, elem);
+
+                            TextView label = (TextView) elem.findViewById(R.id.label);
+                            Spinner spinner = (Spinner) elem.findViewById(R.id.spinner);
+                            JSONArray options = attribute.getJSONArray("options");
+
+                            label.setText(attribute.getString("label"));
+
+                            ArrayList<String> items = new ArrayList<String>();
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item);
+
+                            if(attribute.getBoolean("allow_empty")) {
+                                items.add("");  // empty
+                            }
+
+                            Integer selected = 0;
+                            for(int a = 0; a < options.length(); a++) {
+                                JSONObject option = options.getJSONObject(a);
+                                if(option.getString("value").equals(attribute.getString("value"))) {
+                                    selected = a;
+                                    if(attribute.getBoolean("allow_empty")) {
+                                        selected = a + 1;
+                                    }
+                                }
+                                items.add(option.getString("label"));
+                            }
+
+                            adapter.addAll(items);
+                            spinner.setAdapter(adapter);
+                            spinner.setSelection(selected);
+                        } else {
+                            elem = inflater.inflate(R.layout.activity_attribute_change_item_text, null);
+                            field = new FormField(attribute, elem);
+
                             TextView label = (TextView) elem.findViewById(R.id.label);
                             EditText input = (EditText) elem.findViewById(R.id.input);
 
@@ -121,38 +209,10 @@ public class AttributeChangeActivity extends HunterActivity {
                             } else if(type.equals("phone")) {
                                 input.setRawInputType(InputType.TYPE_CLASS_PHONE);
                             }
-
-                            list_layout.addView(elem);
-                        } else if(type.equals("select")) {
-                            View elem = inflater.inflate(R.layout.activity_attribute_change_item_spinner, null);
-                            TextView label = (TextView) elem.findViewById(R.id.label);
-                            Spinner spinner = (Spinner) elem.findViewById(R.id.spinner);
-                            JSONArray options = attribute.getJSONArray("options");
-
-                            label.setText(attribute.getString("label"));
-
-                            ArrayList<String> items = new ArrayList<String>();
-                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item);
-
-                            /*if(attribute.getBoolean("allow_empty")) {
-                                items.add("");  // empty
-                            }*/
-
-                            Integer selected = 0;
-                            for(int a = 0; a < options.length(); a++) {
-                                JSONObject option = options.getJSONObject(a);
-                                if(option.getString("value").equals(attribute.getString("value"))) {
-                                    selected = a;
-                                }
-                                items.add(option.getString("label"));
-                            }
-
-                            adapter.addAll(items);
-                            spinner.setAdapter(adapter);
-                            spinner.setSelection(selected);
-
-                            list_layout.addView(elem);
                         }
+
+                        list_layout.addView(elem);
+                        formFields.add(field);
                     }
 
                 } catch (JSONException e) {

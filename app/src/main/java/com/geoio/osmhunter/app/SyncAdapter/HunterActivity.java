@@ -14,6 +14,7 @@ import java.io.IOException;
 
 public class HunterActivity extends Activity {
     public Bundle user;
+    public Boolean accountReady = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +27,7 @@ public class HunterActivity extends Activity {
             public void run(AccountManagerFuture<Bundle> future) {
                 try {
                     user = future.getResult();
+                    accountReady = true;
 
                     accountReady();
 
