@@ -2,6 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.geoio.osmhunter.app.AttributeChangeActivity" >
 
+    <item android:id="@+id/action_navigate"
+        android:title="Navigate to the building"
+        android:icon="@drawable/ic_action_directions"
+        android:showAsAction="ifRoom" />
+
     <item android:id="@+id/action_save"
         android:title="Save attributes"
         android:icon="@drawable/ic_action_save"

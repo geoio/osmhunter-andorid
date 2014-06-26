@@ -165,8 +165,13 @@ public class MainActivity extends HunterActivity {
                 Projection pj = mapView.getProjection();
                 GeoPoint position = (GeoPoint)pj.fromPixels((int)event.getX(), (int)event.getY());
                 try {
+                    JSONObject centroid = house.getJSONObject("centroid");
                     Intent intent = new Intent(getApplicationContext(), AttributeChangeActivity.class);
+
                     intent.putExtra("id", house.getString("id"));
+                    intent.putExtra("lat", centroid.getString("lat"));
+                    intent.putExtra("lon", centroid.getString("lon"));
+
                     startActivity(intent);
                 } catch (JSONException e) {
                     e.printStackTrace();

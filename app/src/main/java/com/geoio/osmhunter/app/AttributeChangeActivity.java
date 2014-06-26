@@ -39,6 +39,8 @@ public class AttributeChangeActivity extends HunterActivity {
     LinearLayout list_layout;
     private ArrayList<FormField> formFields = new ArrayList<FormField>();
     private String id;
+    private String lat;
+    private String lon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,8 @@ public class AttributeChangeActivity extends HunterActivity {
 
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
+        lat = intent.getStringExtra("lat");
+        lon = intent.getStringExtra("lon");
 
         updateAttributesList(id);
 
@@ -74,9 +78,21 @@ public class AttributeChangeActivity extends HunterActivity {
         switch(item.getItemId()) {
             case R.id.action_settings:
                 return true;
+
             case R.id.action_save:
                 saveForm();
                 return true;
+
+            case R.id.action_navigate:
+                StringBuilder stringBuilder = new StringBuilder("geo:0,0?q=").append(lat).append(",").append(lon);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(stringBuilder.toString()));
+
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+
+                return true;
+
             case android.R.id.home:
                 finish();
                 return true;
