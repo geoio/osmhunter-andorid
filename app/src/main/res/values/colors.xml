@@ -1,3 +1,5 @@
 <resources>
     <color name="geoio">#62939d</color>
+    <color name="swipe_refresh_1">#486b73</color>
+    <color name="swipe_refresh_2">#314a4f</color>
 </resources>

@@ -12,6 +12,7 @@
 
     <string name="title_activity_attribute_change">AttributeChangeActivity</string>
     <string name="title_activity_login">Login</string>
+    <string name="title_activity_leaderboard">LeaderboardActivity</string>
     <string name="authenticator_account_type">com.geoio.osmhunter.authenticate</string>
 
 </resources>
