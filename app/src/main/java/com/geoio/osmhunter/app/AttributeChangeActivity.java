@@ -113,21 +113,27 @@ public class AttributeChangeActivity extends HunterActivity {
                     }
                     String selectedValue = options.getJSONArray("options").getJSONObject(selection).getString("value");
 
-                    if(!selectedValue.equals(options.getString("value")))                           // value changed
-                        tags.put(options.getString("name"), selectedValue);
+                    if(!selectedValue.equals(options.getString("value")))                                           // value changed
+                        if(!(!options.getBoolean("allow_empty") && selection == -1))                                // value is null but cannot be null
+                            if(!(selection == -1 && options.isNull("value") && options.getBoolean("allow_empty")))  // value did not changed and is null
+                                tags.put(options.getString("name"), selectedValue);
 
                 } else {
                     EditText textView = (EditText) view.findViewById(R.id.input);
-                    if(!textView.getText().equals(options.getString("value")))                      // value changed
-                        if(!(TextUtils.isEmpty(textView.getText()) && options.isNull("value")))     // value did not changed and is null
-                            tags.put(options.getString("name"), textView.getText());
+
+                    if(!textView.getText().toString().equals(options.getString("value")))                                                   // value changed
+                        if(!(!options.getBoolean("allow_empty") && TextUtils.isEmpty(textView.getText())))                                  // value is null but cannot be null
+                            if(!(TextUtils.isEmpty(textView.getText()) && options.isNull("value") && options.getBoolean("allow_empty")))    // value did not changed and is null
+                                tags.put(options.getString("name"), textView.getText());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
-        Log.v("json", payload.toString());
+        if(tags.length() > 0) {
+            Log.v("json", payload.toString());
+        }
     }
 
     private void updateAttributesList(final String id) {
