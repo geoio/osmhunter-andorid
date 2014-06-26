@@ -3,6 +3,7 @@ package com.geoio.osmhunter.app;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -99,6 +100,12 @@ public class MapActivity extends HunterActivity {
 
     // update shapes on map move/zoom
     private void updateShapesOverlay() {
+        // minimum zoomlevel
+        Resources res = getResources();
+        if(mapView.getZoomLevel() < res.getInteger(R.integer.geoio_api_min_zoom)) {
+            return;
+        }
+
         BoundingBoxE6 bb = mapView.getBoundingBox();
         Uri.Builder b = Uri.parse(getString(R.string.geoio_api_url)).buildUpon();
         AsyncHttpClient client = new AsyncHttpClient();
@@ -113,7 +120,7 @@ public class MapActivity extends HunterActivity {
         b.appendQueryParameter("west", String.valueOf(l1.getLongitude()));
         b.appendQueryParameter("north", String.valueOf(l2.getLatitude()));
         b.appendQueryParameter("east", String.valueOf(l2.getLongitude()));
-        b.appendQueryParameter("limit", "6");
+        b.appendQueryParameter("limit", res.getString(R.string.geoio_api_buildings_per_request));
         String url = b.build().toString();
 
         // fire http
