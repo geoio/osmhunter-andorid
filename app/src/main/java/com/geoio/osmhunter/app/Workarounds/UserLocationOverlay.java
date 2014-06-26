@@ -2,6 +2,7 @@ package com.geoio.osmhunter.app.Workarounds;
 
 import android.content.Context;
 import android.location.Location;
+import android.location.LocationManager;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -16,6 +17,11 @@ public class UserLocationOverlay extends MyLocationNewOverlay {
     public UserLocationOverlay(Context context, MapView mv) {
         super(context, mv);
         mapView = mv;
+
+        // fast fix: get the last known location
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        Location lastKnownLocation = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        mapView.getController().setCenter(new GeoPoint(lastKnownLocation));
     }
 
     @Override
@@ -23,7 +29,7 @@ public class UserLocationOverlay extends MyLocationNewOverlay {
         super.onLocationChanged(location, source);
 
         if(location != null && noFix) {
-            mapView.getController().setCenter(new GeoPoint(location));
+            mapView.getController().animateTo(new GeoPoint(location));
             noFix = false;
         }
     }
