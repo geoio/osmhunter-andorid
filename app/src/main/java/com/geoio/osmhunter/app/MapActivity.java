@@ -39,6 +39,7 @@ public class MapActivity extends HunterActivity {
 
     private MyMapView mapView;
     private UserLocationOverlay myLocationOverlay;
+    private Resources res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +49,12 @@ public class MapActivity extends HunterActivity {
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        res = getResources();
+
         mapView = (MyMapView) this.findViewById(R.id.mapview);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setMultiTouchControls(true);
-        mapView.getController().setZoom(18);
+        mapView.getController().setZoom(res.getInteger(R.integer.map_initial_zoom));
 
         showPositionOverlay();
 
@@ -78,6 +81,7 @@ public class MapActivity extends HunterActivity {
 
             case R.id.action_location:
                 if(myLocationOverlay.getMyLocation() != null) {
+                    mapView.getController().setZoom(res.getInteger(R.integer.map_initial_zoom));
                     mapView.getController().animateTo(myLocationOverlay.getMyLocation());
                 }
                 return true;
@@ -101,7 +105,6 @@ public class MapActivity extends HunterActivity {
     // update shapes on map move/zoom
     private void updateShapesOverlay() {
         // minimum zoomlevel
-        Resources res = getResources();
         if(mapView.getZoomLevel() < res.getInteger(R.integer.geoio_api_min_zoom)) {
             return;
         }

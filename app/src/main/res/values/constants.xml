@@ -8,6 +8,7 @@
     <string name="geoio_api_url">https://osmhunter.geo.io/api/v1/</string>
     <integer name="geoio_api_min_zoom">14</integer>
     <string name="geoio_api_buildings_per_request">10</string>
+    <integer name="map_initial_zoom">18</integer>
 
     <string name="title_activity_attribute_change">AttributeChangeActivity</string>
     <string name="title_activity_login">Login</string>
