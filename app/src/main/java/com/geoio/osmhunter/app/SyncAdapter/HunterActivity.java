@@ -15,12 +15,14 @@ import java.io.IOException;
 public class HunterActivity extends Activity {
     public Bundle user;
     public Boolean accountReady = false;
+    private AccountManager am;
+    private String account_type;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AccountManager am = AccountManager.get(this);
-        String account_type = this.getString(R.string.authenticator_account_type);
+        am = AccountManager.get(this);
+        account_type = this.getString(R.string.authenticator_account_type);
 
         am.getAuthTokenByFeatures(account_type, "", null, this, null, null, new AccountManagerCallback<Bundle>() {
             @Override
@@ -47,5 +49,9 @@ public class HunterActivity extends Activity {
      */
     public void accountReady() {
 
+    }
+
+    public void accountInvalidate() {
+        am.invalidateAuthToken(account_type, user.getString(AccountManager.KEY_AUTHTOKEN));
     }
 }

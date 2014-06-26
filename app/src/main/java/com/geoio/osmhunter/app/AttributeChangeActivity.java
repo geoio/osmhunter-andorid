@@ -1,12 +1,12 @@
 package com.geoio.osmhunter.app;
 
+import android.accounts.AccountManager;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,10 +23,12 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.apache.http.entity.ByteArrayEntity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class AttributeChangeActivity extends HunterActivity {
     LayoutInflater inflater;
     LinearLayout list_layout;
     private ArrayList<FormField> formFields = new ArrayList<FormField>();
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +49,7 @@ public class AttributeChangeActivity extends HunterActivity {
         list_layout = (LinearLayout) this.findViewById(R.id.list);
 
         Intent intent = getIntent();
-        String id = intent.getStringExtra("id");
+        id = intent.getStringExtra("id");
 
         updateAttributesList(id);
 
@@ -79,10 +82,6 @@ public class AttributeChangeActivity extends HunterActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void accountReady() {
     }
 
     private void saveForm() {
@@ -132,7 +131,38 @@ public class AttributeChangeActivity extends HunterActivity {
         }
 
         if(tags.length() > 0) {
-            Log.v("json", payload.toString());
+            Uri.Builder b = Uri.parse(getString(R.string.geoio_api_url)).buildUpon();
+            AsyncHttpClient client = new AsyncHttpClient();
+            ByteArrayEntity entity;
+
+            // build url
+            b.appendPath("buildings");
+            b.appendPath(id);
+            b.appendQueryParameter("apikey", user.getString(AccountManager.KEY_AUTHTOKEN));
+            String url = b.build().toString();
+
+            try {
+                entity = new ByteArrayEntity(payload.toString().getBytes("UTF-8"));
+
+                // fire http
+                client.put(this, url, entity, "application/json", new JsonHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        // please do anything!
+                    }
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        if(statusCode == 400) {
+                            accountInvalidate();
+                            return;
+                        }
+
+                        finish();
+                    }
+                });
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
     }
 
