@@ -18,12 +18,33 @@ public class HunterActivity extends Activity {
     private AccountManager am;
     private String account_type;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         am = AccountManager.get(this);
         account_type = this.getString(R.string.authenticator_account_type);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        accountGet();
+    }
+
+    /**
+     * This function gets called when user is filled. Please override it in your activity.
+     */
+    public void accountReady() {
+
+    }
+
+    public void accountInvalidate() {
+        am.invalidateAuthToken(account_type, user.getString(AccountManager.KEY_AUTHTOKEN));
+        accountGet();
+    }
+
+    private void accountGet() {
         am.getAuthTokenByFeatures(account_type, "", null, this, null, null, new AccountManagerCallback<Bundle>() {
             @Override
             public void run(AccountManagerFuture<Bundle> future) {
@@ -42,16 +63,5 @@ public class HunterActivity extends Activity {
                 }
             }
         }, null);
-    }
-
-    /**
-     * This function gets called when user is filled. Please override it in your activity.
-     */
-    public void accountReady() {
-
-    }
-
-    public void accountInvalidate() {
-        am.invalidateAuthToken(account_type, user.getString(AccountManager.KEY_AUTHTOKEN));
     }
 }
