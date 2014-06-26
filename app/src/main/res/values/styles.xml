@@ -9,6 +9,7 @@
     <style name="AppActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/geoio</item>
         <item name="android:titleTextStyle">@style/AppActionBarTitle</item>
+        <item name="android:indeterminateProgressStyle">@android:style/Widget.Holo.ProgressBar.Small</item>
     </style>
 
     <style name="AppActionBarTitle" parent="@android:TextAppearance.Holo.Widget.ActionBar.Title">

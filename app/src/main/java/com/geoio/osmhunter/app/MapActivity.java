@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.Window;
 
 import com.geoio.osmhunter.app.SyncAdapter.HunterActivity;
 import com.geoio.osmhunter.app.Workarounds.MyMapView;
@@ -44,6 +45,7 @@ public class MapActivity extends HunterActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_map);
 
         final ActionBar actionBar = getActionBar();
@@ -112,6 +114,8 @@ public class MapActivity extends HunterActivity {
             return;
         }
 
+        setProgressBarIndeterminateVisibility(true);
+
         BoundingBoxE6 bb = mapView.getBoundingBox();
         Uri.Builder b = Uri.parse(getString(R.string.geoio_api_url)).buildUpon();
         AsyncHttpClient client = new AsyncHttpClient();
@@ -164,6 +168,7 @@ public class MapActivity extends HunterActivity {
                     }
 
                     mapView.invalidate();
+                    setProgressBarIndeterminateVisibility(false);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

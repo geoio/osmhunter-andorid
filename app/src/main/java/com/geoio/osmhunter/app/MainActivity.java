@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +27,11 @@ public class MainActivity extends HunterActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_main);
+
+        // user info loading
+        setProgressBarIndeterminateVisibility(true);
 
         Button button_discover = (Button) findViewById(R.id.button_discover);
         button_discover.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +99,8 @@ public class MainActivity extends HunterActivity {
                     pointsBuilder.append(result.getInt("points"));
                     pointsBuilder.append(" points");
                     points.setText(pointsBuilder.toString());
+
+                    setProgressBarIndeterminateVisibility(false);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
