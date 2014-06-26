@@ -1,0 +1,12 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_start"
+    android:orientation="horizontal"
+    tools:context="com.geoio.osmhunter.app.MainActivity">
+
+    <include layout="@layout/activity_main_user" />
+    <include layout="@layout/activity_main_actions" />
+
+</LinearLayout>

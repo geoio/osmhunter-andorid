@@ -1,5 +1,6 @@
 package com.geoio.osmhunter.app;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -43,6 +44,9 @@ public class MapActivity extends HunterActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        final ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         mapView = (MyMapView) this.findViewById(R.id.mapview);
         mapView.setTileSource(TileSourceFactory.MAPNIK);
         mapView.setMultiTouchControls(true);
@@ -70,10 +74,15 @@ public class MapActivity extends HunterActivity {
         switch(item.getItemId()) {
             case R.id.action_settings:
                 return true;
+
             case R.id.action_location:
                 if(myLocationOverlay.getMyLocation() != null) {
                     mapView.getController().animateTo(myLocationOverlay.getMyLocation());
                 }
+                return true;
+
+            case android.R.id.home:
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
