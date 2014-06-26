@@ -19,6 +19,9 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
+        <meta-data android:name="MAPBOX_MAPID" android:value="geoio.hlo440ja"/>
+
         <service android:name="com.geoio.osmhunter.app.SyncAdapter.AuthenticatorService" >
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />

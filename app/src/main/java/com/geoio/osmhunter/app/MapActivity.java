@@ -26,7 +26,7 @@ import org.osmdroid.events.DelayedMapListener;
 import org.osmdroid.events.MapListener;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.events.ZoomEvent;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.tileprovider.tilesource.MapBoxTileSource;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -51,8 +51,11 @@ public class MapActivity extends HunterActivity {
 
         res = getResources();
 
+        MapBoxTileSource.retrieveMapBoxMapId(this);
+        MapBoxTileSource tileSource = new MapBoxTileSource();
+
         mapView = (MyMapView) this.findViewById(R.id.mapview);
-        mapView.setTileSource(TileSourceFactory.MAPNIK);
+        mapView.setTileSource(tileSource);
         mapView.setMultiTouchControls(true);
         mapView.getController().setZoom(res.getInteger(R.integer.map_initial_zoom));
 
