@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -31,7 +32,11 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_login);
+
+        // web page loading
+        setProgressBarIndeterminateVisibility(true);
 
         am = AccountManager.get(this);
 
@@ -102,6 +107,8 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 
         @Override
         public void onPageFinished(WebView view, String url) {
+            setProgressBarIndeterminateVisibility(false);
+
             Uri uri = Uri.parse(url);
             Uri base_uri = Uri.parse(getString(R.string.geoio_api_url));
             String oauth_token = uri.getQueryParameter("oauth_token");
