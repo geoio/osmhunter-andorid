@@ -1,6 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.geoio.osmhunter.app.MainActivity" >
+    tools:context="com.geoio.osmhunter.app.MapActivity" >
 
     <item android:id="@+id/action_location"
         android:title="My Location"

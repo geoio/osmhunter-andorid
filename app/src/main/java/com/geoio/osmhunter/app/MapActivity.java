@@ -33,7 +33,7 @@ import org.osmdroid.views.Projection;
 import java.util.ArrayList;
 
 
-public class MainActivity extends HunterActivity {
+public class MapActivity extends HunterActivity {
 
     private MyMapView mapView;
     private UserLocationOverlay myLocationOverlay;
