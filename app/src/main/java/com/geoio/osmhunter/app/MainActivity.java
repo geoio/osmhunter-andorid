@@ -78,7 +78,7 @@ public class MainActivity extends HunterActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
-                    if(statusCode == 400) {
+                    if(statusCode == 401) {
                         accountInvalidate();
                         return;
                     }

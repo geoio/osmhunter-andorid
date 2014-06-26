@@ -168,7 +168,7 @@ public class AttributeChangeActivity extends HunterActivity {
                     }
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        if(statusCode == 400) {
+                        if(statusCode == 401) {
                             accountInvalidate();
                             return;
                         }
