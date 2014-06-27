@@ -7,7 +7,7 @@
     <integer name="geoio_api_buildings_nearby_radius">2000</integer>
 
     <integer name="map_initial_zoom">18</integer>
-    <integer name="map_building_border_size">2</integer>
+    0<integer name="map_building_border_size">3</integer>
 
     <string name="authenticator_account_type">com.geoio.osmhunter.authenticate</string>
 

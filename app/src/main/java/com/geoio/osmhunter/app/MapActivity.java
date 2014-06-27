@@ -12,6 +12,7 @@ import com.geoio.osmhunter.app.SyncAdapter.HunterActivity;
 import com.geoio.osmhunter.app.Workarounds.HouseOverlay;
 import com.geoio.osmhunter.app.Workarounds.MyMapView;
 import com.geoio.osmhunter.app.Workarounds.UserLocationOverlay;
+import com.geoio.osmhunter.app.Workarounds.MapBoxTileSource;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -23,7 +24,6 @@ import org.osmdroid.events.DelayedMapListener;
 import org.osmdroid.events.MapListener;
 import org.osmdroid.events.ScrollEvent;
 import org.osmdroid.events.ZoomEvent;
-import org.osmdroid.tileprovider.tilesource.MapBoxTileSource;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
 
