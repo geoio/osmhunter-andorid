@@ -5,14 +5,28 @@
     <item android:id="@+id/action_previous"
         android:title="@string/previous"
         android:icon="@drawable/ic_action_previous_item"
-        android:showAsAction="ifRoom" />
+        android:showAsAction="always" />
 
     <item android:id="@+id/distance"
+        android:title="@string/loading"
         android:enabled="false"
         android:showAsAction="always" />
 
     <item android:id="@+id/action_next"
         android:title="@string/next"
         android:icon="@drawable/ic_action_next_item"
-        android:showAsAction="ifRoom" />
+        android:showAsAction="always" />
+
+    <item android:id="@+id/action_navigate"
+        android:title="@string/attribute_change_navigate"
+        android:icon="@drawable/ic_action_directions"
+        android:enabled="false"
+        android:showAsAction="always" />
+
+    <item android:id="@+id/action_edit"
+        android:title="@string/edit"
+        android:icon="@drawable/ic_action_edit"
+        android:enabled="false"
+        android:showAsAction="always"/>
+
 </menu>

@@ -4,6 +4,7 @@
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <item name="android:actionBarStyle">@style/AppActionBar</item>
         <item name="android:buttonStyle">@style/AppButton</item>
+        <item name="android:actionMenuTextColor">@android:color/white</item>
     </style>
 
     <style name="AppActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
@@ -20,6 +21,5 @@
     <style name="AppButton" parent="@android:style/Widget.Holo.Light.Button">
         <item name="android:textColor">@android:color/white</item>
     </style>
-
 
 </resources>

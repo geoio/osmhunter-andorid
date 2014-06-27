@@ -5,6 +5,7 @@
 
     <string name="previous">Vorheriges</string>
     <string name="next">Nächstes</string>
+    <string name="edit">Editieren</string>
 
     <string name="action_settings">Einstellungen</string>
 
@@ -24,6 +25,7 @@
     <string name="map_location">Meine Position</string>
 
     <string name="title_activity_nearby_buildings">Auf gut Glück!</string>
+    <string name="loading">Läd …</string>
 
     <plurals name="points">
         <item quantity="zero">Keine Punkte</item>
