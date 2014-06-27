@@ -12,7 +12,7 @@
     <string name="title_activity_login">Login</string>
     <string name="title_activity_leaderboard">Leaderboard</string>
     <string name="main_about">About</string>
-    <string name="title_activity_attribute_change">AttributeChangeActivity</string>
+    <string name="title_activity_attribute_change">Edit attributes</string>
     <string name="attribute_change_navigate">Navigate to the building</string>
     <string name="attribute_change_save">Save attributes</string>
     <string name="title_activity_map">Discover</string>

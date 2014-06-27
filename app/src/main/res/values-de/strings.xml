@@ -17,7 +17,7 @@
 
     <string name="main_about">Über die App</string>
 
-    <string name="title_activity_attribute_change">AttributeChangeActivity</string>
+    <string name="title_activity_attribute_change">Editieren</string>
     <string name="attribute_change_navigate">Zu dem Gebäude navigieren</string>
     <string name="attribute_change_save">Speichern</string>
 
