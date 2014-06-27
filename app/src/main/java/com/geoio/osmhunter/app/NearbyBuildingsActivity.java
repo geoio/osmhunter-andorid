@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.osmdroid.util.GeoPoint;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class NearbyBuildingsActivity extends MapActivity {
     private List<JSONObject> nearbyBuildings = new ArrayList<JSONObject>();
     private Integer nearbyBuildingsNeedle = 0;
     private Boolean firstLoad = true;
+    private MenuItem distance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,9 @@ public class NearbyBuildingsActivity extends MapActivity {
         
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.nearby_buildings, menu);
+
+        distance = (MenuItem) menu.findItem(R.id.distance);
+
         return true;
     }
 
@@ -57,7 +62,7 @@ public class NearbyBuildingsActivity extends MapActivity {
                 return true;
 
             case R.id.action_next:
-                if(nearbyBuildingsNeedle < nearbyBuildings.size() - 1) {
+                if(nearbyBuildingsNeedle < nearbyBuildings.size() -1) {
                     nearbyBuildingsNeedle++;
                     scrollToNearby();
                 }
@@ -76,6 +81,9 @@ public class NearbyBuildingsActivity extends MapActivity {
             GeoPoint centroid;
 
             centroid = new GeoPoint(buildingCentroid.getDouble("lat"), buildingCentroid.getDouble("lon"));
+
+            DecimalFormat df = new DecimalFormat("0.## km");
+            distance.setTitle(df.format(building.getDouble("distance")));
 
             mapView.getController().animateTo(centroid);
         } catch (JSONException e) {
@@ -138,6 +146,8 @@ public class NearbyBuildingsActivity extends MapActivity {
                         poly.setPoints();
                         firstLoad = false;
                     }
+
+                    scrollToNearby();
 
                 } catch (JSONException e) {
                     e.printStackTrace();

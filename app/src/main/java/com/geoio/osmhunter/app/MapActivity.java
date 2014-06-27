@@ -32,6 +32,7 @@ public class MapActivity extends HunterActivity {
 
     public MyMapView mapView;
     public UserLocationOverlay myLocationOverlay;
+    public ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class MapActivity extends HunterActivity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_map);
 
-        final ActionBar actionBar = getActionBar();
+        actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         MapBoxTileSource.retrieveMapBoxMapId(this);
