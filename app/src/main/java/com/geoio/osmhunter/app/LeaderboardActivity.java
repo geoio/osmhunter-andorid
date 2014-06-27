@@ -181,14 +181,16 @@ public class LeaderboardActivity extends HunterActivity {
 
             JSONObject user = mLeaderboard.get(i);
 
-            ImageView avatar = (ImageView) view.findViewById(R.id.avatar);
-            TextView username = (TextView) view.findViewById(R.id.username);
-            TextView points = (TextView) view.findViewById(R.id.points);
+            ImageView avatarView = (ImageView) view.findViewById(R.id.avatar);
+            TextView usernameView = (TextView) view.findViewById(R.id.username);
+            TextView pointsView = (TextView) view.findViewById(R.id.points);
 
             try {
-                Picasso.with(mContext).load(user.getString("image")).fit().into(avatar);
-                username.setText(user.getString("username"));
-                points.setText(user.getString("points"));
+                Integer points = user.getInt("points");
+
+                Picasso.with(mContext).load(user.getString("image")).fit().into(avatarView);
+                usernameView.setText(user.getString("username"));
+                pointsView.setText(res.getQuantityString(R.plurals.points, points, points));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

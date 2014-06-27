@@ -75,7 +75,6 @@ public class MainActivity extends HunterActivity {
 
     @Override
     public void accountReady() {
-        final ImageView image = (ImageView) findViewById(R.id.avatar);
         Uri.Builder b = Uri.parse(getString(R.string.geoio_api_url)).buildUpon();
         AsyncHttpClient client = new AsyncHttpClient();
 
@@ -98,16 +97,16 @@ public class MainActivity extends HunterActivity {
                     }
 
                     JSONObject result = response.getJSONObject("result");
-                    TextView username = (TextView) findViewById(R.id.username);
-                    TextView points = (TextView) findViewById(R.id.points);
+                    Integer points = result.getInt("points");
 
-                    Picasso.with(getApplicationContext()).load(result.getString("image")).into(image);
-                    username.setText(result.getString("display_name"));
+                    ImageView imageView = (ImageView) findViewById(R.id.avatar);
+                    TextView usernameView = (TextView) findViewById(R.id.username);
+                    TextView pointsView = (TextView) findViewById(R.id.points);
 
-                    StringBuilder pointsBuilder = new StringBuilder();
-                    pointsBuilder.append(result.getInt("points"));
-                    pointsBuilder.append(" points");
-                    points.setText(pointsBuilder.toString());
+                    Picasso.with(getApplicationContext()).load(result.getString("image")).into(imageView);
+                    usernameView.setText(result.getString("display_name"));
+
+                    pointsView.setText(res.getQuantityString(R.plurals.points, points, points));
 
                     setProgressBarIndeterminateVisibility(false);
                 } catch (JSONException e) {

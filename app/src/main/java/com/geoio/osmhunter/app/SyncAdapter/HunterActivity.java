@@ -6,6 +6,7 @@ import android.accounts.AccountManagerFuture;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.app.Activity;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import com.geoio.osmhunter.app.R;
@@ -13,10 +14,13 @@ import com.geoio.osmhunter.app.R;
 import java.io.IOException;
 
 public class HunterActivity extends Activity {
+
     public Bundle user;
     public Boolean accountReady = false;
     private AccountManager am;
     private String account_type;
+
+    public Resources res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +28,8 @@ public class HunterActivity extends Activity {
 
         am = AccountManager.get(this);
         account_type = this.getString(R.string.authenticator_account_type);
+
+        res = getResources();
     }
 
     @Override

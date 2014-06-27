@@ -3,7 +3,6 @@ package com.geoio.osmhunter.app;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,7 +39,6 @@ public class MapActivity extends HunterActivity {
 
     private MyMapView mapView;
     private UserLocationOverlay myLocationOverlay;
-    private Resources res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +48,6 @@ public class MapActivity extends HunterActivity {
 
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        res = getResources();
 
         MapBoxTileSource.retrieveMapBoxMapId(this);
         MapBoxTileSource tileSource = new MapBoxTileSource();

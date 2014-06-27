@@ -10,25 +10,25 @@
 
     <Button
         android:id="@+id/button_discover"
-        android:text="Discover"
+        android:text="@string/title_activity_map"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/button_lucky"
-        android:text="I'm feeling lucky"
+        android:text="@string/main_feeling_lucky"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/button_leaderboard"
-        android:text="Leaderboard"
+        android:text="@string/title_activity_leaderboard"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/button_about"
-        android:text="About"
+        android:text="@string/main_about"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
