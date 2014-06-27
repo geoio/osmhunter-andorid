@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -43,10 +44,6 @@ public class LeaderboardActivity extends HunterActivity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_leaderboard);
 
-        listLeaderboardAdapter = new LeaderboardAdapter(this, leaderboard);
-        listLeaderboard = (ListView) findViewById(R.id.list_leaderboard);
-        listLeaderboard.setAdapter(listLeaderboardAdapter);
-
         // swipe refresh
         refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
         refreshLayout.setColorScheme(R.color.geoio, R.color.swipe_refresh_1, R.color.geoio, R.color.swipe_refresh_2);
@@ -57,6 +54,25 @@ public class LeaderboardActivity extends HunterActivity {
             }
         });
         refreshLayout.setRefreshing(true);
+
+        // listview
+        listLeaderboardAdapter = new LeaderboardAdapter(this, leaderboard);
+        listLeaderboard = (ListView) findViewById(R.id.list_leaderboard);
+        listLeaderboard.setAdapter(listLeaderboardAdapter);
+        // only activate the refreshLayout if the first list item is visible to not interference the listLeaderboard
+        listLeaderboard.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int firstVisibleItem, int i2, int i3) {
+                refreshLayout.setEnabled(false);
+                if(firstVisibleItem == 0) {
+                    refreshLayout.setEnabled(true);
+                }
+            }
+        });
 
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);

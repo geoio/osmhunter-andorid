@@ -16,7 +16,7 @@
         <ListView
             android:id="@+id/list_leaderboard"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"></ListView>
+            android:layout_height="fill_parent" />
 
     </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>
