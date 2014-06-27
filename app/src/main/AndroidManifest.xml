@@ -59,7 +59,12 @@
         <activity
             android:name="com.geoio.osmhunter.app.LeaderboardActivity"
             android:label="@string/title_activity_leaderboard"
-            android:parentActivityName="com.geoio.osmhunter.app.MapActivity">
+            android:parentActivityName="com.geoio.osmhunter.app.MapActivity" >
+        </activity>
+        <activity
+            android:name="com.geoio.osmhunter.app.NearbyBuildingsActivity"
+            android:label="@string/title_activity_nearby_buildings"
+            android:uiOptions="splitActionBarWhenNarrow">
         </activity>
     </application>
 

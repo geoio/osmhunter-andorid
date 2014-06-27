@@ -16,7 +16,7 @@
 
     <Button
         android:id="@+id/button_lucky"
-        android:text="@string/main_feeling_lucky"
+        android:text="@string/title_activity_nearby_buildings"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 

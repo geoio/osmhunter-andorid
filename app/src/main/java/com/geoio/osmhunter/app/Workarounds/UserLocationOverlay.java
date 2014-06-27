@@ -11,6 +11,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 // compiling library projects is horrible, so here's a simple fix for runOnFirstFix (Bug #1)
 public class UserLocationOverlay extends MyLocationNewOverlay {
+
     private boolean noFix = true;
     private MapView mapView;
 

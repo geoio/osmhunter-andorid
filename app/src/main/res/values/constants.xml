@@ -3,9 +3,11 @@
 
     <string name="geoio_api_url">https://osmhunter.geo.io/api/v1/</string>
     <integer name="geoio_api_min_zoom">14</integer>
-    <string name="geoio_api_buildings_per_request">10</string>
+    <integer name="geoio_api_buildings_per_request">10</integer>
+    <integer name="geoio_api_buildings_nearby_radius">2000</integer>
 
     <integer name="map_initial_zoom">18</integer>
+    <integer name="map_building_border_size">2</integer>
 
     <string name="authenticator_account_type">com.geoio.osmhunter.authenticate</string>
 

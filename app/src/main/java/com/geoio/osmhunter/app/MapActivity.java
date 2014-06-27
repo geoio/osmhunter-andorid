@@ -1,18 +1,15 @@
 package com.geoio.osmhunter.app;
 
 import android.app.ActionBar;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.Window;
 import android.widget.Toast;
 
 import com.geoio.osmhunter.app.SyncAdapter.HunterActivity;
+import com.geoio.osmhunter.app.Workarounds.HouseOverlay;
 import com.geoio.osmhunter.app.Workarounds.MyMapView;
 import com.geoio.osmhunter.app.Workarounds.UserLocationOverlay;
 import com.loopj.android.http.AsyncHttpClient;
@@ -22,7 +19,6 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.osmdroid.bonuspack.overlays.Polygon;
 import org.osmdroid.events.DelayedMapListener;
 import org.osmdroid.events.MapListener;
 import org.osmdroid.events.ScrollEvent;
@@ -30,16 +26,12 @@ import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.tileprovider.tilesource.MapBoxTileSource;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
-import org.osmdroid.views.MapView;
-import org.osmdroid.views.Projection;
-
-import java.util.ArrayList;
 
 
 public class MapActivity extends HunterActivity {
 
-    private MyMapView mapView;
-    private UserLocationOverlay myLocationOverlay;
+    public MyMapView mapView;
+    public UserLocationOverlay myLocationOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +97,7 @@ public class MapActivity extends HunterActivity {
 
 
     // update shapes on map move/zoom
-    private void updateShapesOverlay() {
+    public void updateShapesOverlay() {
         // minimum zoomlevel
         if(mapView.getZoomLevel() < res.getInteger(R.integer.geoio_api_min_zoom)) {
             return;
@@ -127,7 +119,7 @@ public class MapActivity extends HunterActivity {
         b.appendQueryParameter("west", String.valueOf(l1.getLongitude()));
         b.appendQueryParameter("north", String.valueOf(l2.getLatitude()));
         b.appendQueryParameter("east", String.valueOf(l2.getLongitude()));
-        b.appendQueryParameter("limit", res.getString(R.string.geoio_api_buildings_per_request));
+        b.appendQueryParameter("limit", res.getString(R.integer.geoio_api_buildings_per_request));
         String url = b.build().toString();
 
         // fire http
@@ -148,24 +140,18 @@ public class MapActivity extends HunterActivity {
                         JSONObject result = results.getJSONObject(i);
                         JSONArray nodes = result.getJSONArray("nodes");
 
-                        HouseOverlay poly = new HouseOverlay(mapView.getContext(), result);
-                        poly.setFillColor(Color.BLUE);
-                        poly.setStrokeColor(Color.RED);
-                        poly.setStrokeWidth(5);
-                        ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
+                        HouseOverlay poly = new HouseOverlay(mapView, result);
 
                         for(int ii = 0; ii < nodes.length(); ii++) {
                             double lat = nodes.getJSONObject(ii).getDouble("lat");
                             double lon = nodes.getJSONObject(ii).getDouble("lon");
 
-                            points.add(new GeoPoint(lat, lon));
+                            poly.addPoint(new GeoPoint(lat, lon));
                         }
 
-                        poly.setPoints(points);
-                        mapView.getOverlays().add(poly);
+                        poly.setPoints();
                     }
 
-                    mapView.invalidate();
                     setProgressBarIndeterminateVisibility(false);
 
                 } catch (JSONException e) {
@@ -173,37 +159,6 @@ public class MapActivity extends HunterActivity {
                 }
             }
         });
-    }
-
-    private class HouseOverlay extends Polygon {
-        private JSONObject house;
-
-        public HouseOverlay(final Context ctx, JSONObject h) {
-            super(ctx);
-            house = h;
-        }
-
-        @Override
-        public boolean onSingleTapConfirmed(final MotionEvent event, final MapView mapView) {
-            boolean touched = contains(event, mapView);
-            if (touched){
-                Projection pj = mapView.getProjection();
-                GeoPoint position = (GeoPoint)pj.fromPixels((int)event.getX(), (int)event.getY());
-                try {
-                    JSONObject centroid = house.getJSONObject("centroid");
-                    Intent intent = new Intent(getApplicationContext(), AttributeChangeActivity.class);
-
-                    intent.putExtra("id", house.getString("id"));
-                    intent.putExtra("lat", centroid.getString("lat"));
-                    intent.putExtra("lon", centroid.getString("lon"));
-
-                    startActivity(intent);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            return touched;
-        }
     }
 
     private class MyMapListener implements MapListener {
