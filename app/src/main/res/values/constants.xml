@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="geoio_api_url">https://osmhunter.geo.io/api/v1/</string>
+    <string name="geoio_api_url">https://oosmhunter.geo.io/api/v1/</string>
     <integer name="geoio_api_min_zoom">14</integer>
     <string name="geoio_api_buildings_per_request">10</string>
 

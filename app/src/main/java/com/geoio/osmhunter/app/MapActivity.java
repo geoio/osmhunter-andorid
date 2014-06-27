@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.geoio.osmhunter.app.SyncAdapter.HunterActivity;
 import com.geoio.osmhunter.app.Workarounds.MyMapView;
@@ -133,7 +134,8 @@ public class MapActivity extends HunterActivity {
         client.get(url, null, new JsonHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                // please do anything!
+                Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.error_api), Toast.LENGTH_LONG);
+                toast.show();
             }
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

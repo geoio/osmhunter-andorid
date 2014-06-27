@@ -17,6 +17,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.geoio.osmhunter.app.SyncAdapter.HunterActivity;
 import com.loopj.android.http.AsyncHttpClient;
@@ -120,12 +121,16 @@ public class LeaderboardActivity extends HunterActivity {
         client.get(url, null, new JsonHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                // please do anything!
+                Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.error_api), Toast.LENGTH_LONG);
+                toast.show();
             }
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
                     if (statusCode == 401) {
+                        Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.error_api_authorization), Toast.LENGTH_LONG);
+                        toast.show();
+
                         accountInvalidate();
                         return;
                     }
