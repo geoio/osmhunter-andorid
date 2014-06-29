@@ -27,4 +27,6 @@
     <string name="title_activity_nearby_buildings">I\'m feeling lucky</string>
     <string name="loading">Loading …</string>
 
+    <string name="title_activity_address">Address</string>
+
 </resources>

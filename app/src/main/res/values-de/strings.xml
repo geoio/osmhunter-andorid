@@ -33,4 +33,6 @@
         <item quantity="other">%d Punkte</item>
     </plurals>
 
+    <string name="title_activity_address">Adresse</string>
+
 </resources>

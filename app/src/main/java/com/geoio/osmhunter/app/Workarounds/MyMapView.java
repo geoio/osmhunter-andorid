@@ -10,6 +10,7 @@ import org.osmdroid.views.MapView;
 public final class MyMapView extends MapView {
     private static final int IGNORE_MOVE_COUNT = 2;
     private int moveCount = 0;
+    public Boolean scrolling = true;
 
     public MyMapView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -32,5 +33,12 @@ public final class MyMapView extends MapView {
                 break;
         }
         return super.onTouchEvent(ev);
+    }
+
+    @Override
+    public void scrollTo(int x, int y) {
+        if(scrolling) {
+            super.scrollTo(x, y);
+        }
     }
 }

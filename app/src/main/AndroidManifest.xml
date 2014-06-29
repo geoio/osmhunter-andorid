@@ -64,7 +64,12 @@
         <activity
             android:name="com.geoio.osmhunter.app.NearbyBuildingsActivity"
             android:label="@string/title_activity_nearby_buildings"
-            android:uiOptions="splitActionBarWhenNarrow">
+            android:uiOptions="splitActionBarWhenNarrow" >
+        </activity>
+        <activity
+            android:name="com.geoio.osmhunter.app.AddressActivity"
+            android:label="@string/title_activity_address"
+            android:windowSoftInputMode="stateAlwaysVisible|adjustResize">
         </activity>
     </application>
 
