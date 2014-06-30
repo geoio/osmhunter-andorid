@@ -92,7 +92,7 @@ public class MapBoxTileSource extends OnlineTileSourceBase
         url.append(aMapTile.getX());
         url.append("/");
         url.append(aMapTile.getY());
-        url.append(".png");
+        url.append("@2x.png");
 
         String res = url.toString();
 
