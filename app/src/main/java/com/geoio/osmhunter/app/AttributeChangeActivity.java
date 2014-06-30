@@ -128,7 +128,7 @@ public class AttributeChangeActivity extends HunterActivity {
                     }
                     String selectedValue = options.getJSONArray("options").getJSONObject(selection).getString("value");
 
-                    if(!selectedValue.equals(options.getString("value")))                                           // value changed
+                    if(!selectedValue.equals(options.getString("value")) || options.getBoolean("prefilled"))        // value changed
                         if(!(!options.getBoolean("allow_empty") && selection == -1))                                // value is null but cannot be null
                             if(!(selection == -1 && options.isNull("value") && options.getBoolean("allow_empty")))  // value did not changed and is null
                                 tags.put(options.getString("name"), selectedValue);
@@ -136,7 +136,7 @@ public class AttributeChangeActivity extends HunterActivity {
                 } else {
                     EditText textView = (EditText) view.findViewById(R.id.input);
 
-                    if(!textView.getText().toString().equals(options.getString("value")))                                                   // value changed
+                    if(!textView.getText().toString().equals(options.getString("value")) || options.getBoolean("prefilled"))                // value changed
                         if(!(!options.getBoolean("allow_empty") && TextUtils.isEmpty(textView.getText())))                                  // value is null but cannot be null
                             if(!(TextUtils.isEmpty(textView.getText()) && options.isNull("value") && options.getBoolean("allow_empty")))    // value did not changed and is null
                                 tags.put(options.getString("name"), textView.getText());
