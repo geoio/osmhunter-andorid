@@ -15,8 +15,6 @@
     <string name="title_activity_login">Anmelden</string>
     <string name="title_activity_leaderboard">Rangliste</string>
 
-    <string name="main_about">Über die App</string>
-
     <string name="title_activity_attribute_change">Editieren</string>
     <string name="attribute_change_navigate">Zu dem Gebäude navigieren</string>
     <string name="attribute_change_save">Speichern</string>
@@ -34,5 +32,7 @@
         <item quantity="one">Ein Punkt</item>
         <item quantity="other">%d Punkte</item>
     </plurals>
+
+    <string name="title_activity_about">Über die App</string>
 
 </resources>

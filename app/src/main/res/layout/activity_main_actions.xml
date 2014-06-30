@@ -28,7 +28,7 @@
 
     <Button
         android:id="@+id/button_about"
-        android:text="@string/main_about"
+        android:text="@string/title_activity_about"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 

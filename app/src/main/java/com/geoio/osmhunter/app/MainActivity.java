@@ -66,6 +66,15 @@ public class MainActivity extends HunterActivity {
                 startActivity(intent);
             }
         });
+
+        Button button_about = (Button) findViewById(R.id.button_about);
+        button_about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), AboutActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 

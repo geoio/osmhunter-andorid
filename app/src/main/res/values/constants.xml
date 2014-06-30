@@ -6,6 +6,8 @@
     <integer name="geoio_api_buildings_per_request">10</integer>
     <integer name="geoio_api_buildings_nearby_radius">2000</integer>
 
+    <string name="geoio_about_url">http://geo.io/pages/imprint/</string>
+
     <integer name="map_initial_zoom">18</integer>
     0<integer name="map_building_border_size">3</integer>
 
