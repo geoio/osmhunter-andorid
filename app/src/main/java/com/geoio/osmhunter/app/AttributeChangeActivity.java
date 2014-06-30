@@ -12,11 +12,13 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.geoio.osmhunter.app.FormFields.FormField;
 import com.geoio.osmhunter.app.SyncAdapter.HunterActivity;
@@ -42,10 +44,12 @@ public class AttributeChangeActivity extends HunterActivity {
     private String id;
     private String lat;
     private String lon;
+    private MenuItem saveButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_attribute_change);
 
         inflater = LayoutInflater.from(this);
@@ -68,6 +72,7 @@ public class AttributeChangeActivity extends HunterActivity {
         
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.attribute_change, menu);
+        saveButton = (MenuItem) menu.findItem(R.id.action_save);
         return true;
     }
 
@@ -148,6 +153,9 @@ public class AttributeChangeActivity extends HunterActivity {
         }
 
         if(tags.length() > 0) {
+            setProgressBarIndeterminateVisibility(true);
+            saveButton.setEnabled(false);
+
             Uri.Builder b = Uri.parse(getString(R.string.geoio_api_url)).buildUpon();
             AsyncHttpClient client = new AsyncHttpClient();
             ByteArrayEntity entity;
@@ -156,6 +164,7 @@ public class AttributeChangeActivity extends HunterActivity {
             b.appendPath("buildings");
             b.appendPath(id);
             b.appendQueryParameter("apikey", user.getString(AccountManager.KEY_AUTHTOKEN));
+            b.appendQueryParameter("dryrun", "true");
             String url = b.build().toString();
 
             try {
@@ -165,7 +174,11 @@ public class AttributeChangeActivity extends HunterActivity {
                 client.put(this, url, entity, "application/json", new JsonHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        // please do anything!
+                        Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.error_api), Toast.LENGTH_LONG);
+                        toast.show();
+
+                        setProgressBarIndeterminateVisibility(false);
+                        saveButton.setEnabled(true);
                     }
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -180,6 +193,9 @@ public class AttributeChangeActivity extends HunterActivity {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
+        } else {
+            Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.attribute_change_nothing_changed), Toast.LENGTH_LONG);
+            toast.show();
         }
     }
 
@@ -197,7 +213,8 @@ public class AttributeChangeActivity extends HunterActivity {
         client.get(url, null, new JsonHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                // please do anything!
+                Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.error_api), Toast.LENGTH_LONG);
+                toast.show();
             }
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -272,6 +289,7 @@ public class AttributeChangeActivity extends HunterActivity {
                             }
                         }
 
+                        findViewById(R.id.progressBar).setVisibility(View.GONE);
                         list_layout.addView(elem);
                         formFields.add(field);
                     }
