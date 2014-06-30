@@ -6,9 +6,5 @@
         android:title="@string/map_location"
         android:icon="@drawable/ic_action_location_found"
         android:showAsAction="ifRoom"/>
-    
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never" />
+
 </menu>

@@ -60,9 +60,6 @@ public class NearbyBuildingsActivity extends MapActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         switch(id) {
-            case R.id.action_settings:
-                return true;
-
             case R.id.action_previous:
                 if(nearbyBuildingsNeedle > 0) {
                     nearbyBuildingsNeedle--;
@@ -112,9 +109,6 @@ public class NearbyBuildingsActivity extends MapActivity {
                 }
 
                 return true;
-        }
-        if (id == R.id.action_settings) {
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
