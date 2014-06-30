@@ -1,4 +1,4 @@
-package com.geoio.osmhunter.app.FormFields;
+package com.geoio.osmhunter.app.Workarounds;
 
 import android.view.View;
 

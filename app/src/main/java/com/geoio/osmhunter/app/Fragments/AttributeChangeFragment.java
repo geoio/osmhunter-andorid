@@ -21,7 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.geoio.osmhunter.app.FormFields.FormField;
+import com.geoio.osmhunter.app.Workarounds.FormField;
 import com.geoio.osmhunter.app.R;
 import com.geoio.osmhunter.app.SyncAdapter.HunterActivity;
 import com.loopj.android.http.AsyncHttpClient;
@@ -153,7 +153,6 @@ public class AttributeChangeFragment extends Fragment {
             b.appendPath("buildings");
             b.appendPath(id);
             b.appendQueryParameter("apikey", ac.user.getString(AccountManager.KEY_AUTHTOKEN));
-            b.appendQueryParameter("dryrun", "true");
             String url = b.build().toString();
 
             try {
