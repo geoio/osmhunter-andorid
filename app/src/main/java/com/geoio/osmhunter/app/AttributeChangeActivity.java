@@ -3,6 +3,7 @@ package com.geoio.osmhunter.app;
 import android.accounts.AccountManager;
 import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
@@ -252,8 +253,16 @@ public class AttributeChangeActivity extends HunterActivity {
                             String valueText = attribute.getString("value");
 
                             label.setText(labelText);
+                            input.setHint(labelText);
                             if(!valueText.equals("null")) {
                                 input.setText(valueText);
+                            }
+
+                            // prefilled indicator
+                            if(attribute.getBoolean("prefilled")) {
+                                Drawable errorIcon = res.getDrawable(R.drawable.indicator_input_error);
+                                errorIcon.setBounds(0, 0, errorIcon.getIntrinsicWidth(), errorIcon.getIntrinsicHeight());
+                                input.setError(res.getString(R.string.attribute_prefilled_indicator), errorIcon);
                             }
 
                             if(type.equals("url")) {
