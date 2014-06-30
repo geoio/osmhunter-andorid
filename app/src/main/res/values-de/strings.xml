@@ -20,6 +20,7 @@
     <string name="attribute_change_save">Speichern</string>
     <string name="attribute_prefilled_indicator">Dieses Feld ist maschinell vorausgefüllt. Bitte überprüfen.</string>
     <string name="attribute_change_nothing_changed">Bitte ändere etwas vorm speichern!</string>
+    <string name="attribute_change_finished">Attribute gespeichert!</string>
 
     <string name="title_activity_map">Entdecken</string>
     <string name="map_location">Meine Position</string>

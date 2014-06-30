@@ -52,24 +52,23 @@
             android:parentActivityName="com.geoio.osmhunter.app.MainActivity" >
         </activity>
         <activity
-            android:name="com.geoio.osmhunter.app.AttributeChangeActivity"
-            android:label="@string/title_activity_attribute_change"
-            android:parentActivityName="com.geoio.osmhunter.app.MapActivity" >
-        </activity>
-        <activity
             android:name="com.geoio.osmhunter.app.LeaderboardActivity"
             android:label="@string/title_activity_leaderboard"
             android:parentActivityName="com.geoio.osmhunter.app.MainActivity" >
         </activity>
         <activity
-            android:name="com.geoio.osmhunter.app.NearbyBuildingsActivity"
-            android:label="@string/title_activity_nearby_buildings"
-            android:uiOptions="splitActionBarWhenNarrow"
+            android:name="com.geoio.osmhunter.app.AboutActivity"
+            android:label="@string/title_activity_about"
             android:parentActivityName="com.geoio.osmhunter.app.MainActivity" >
         </activity>
         <activity
-            android:name="com.geoio.osmhunter.app.AboutActivity"
-            android:label="@string/title_activity_about"
+            android:name="com.geoio.osmhunter.app.AttributeChangeActivity"
+            android:label="@string/title_activity_attribute_change" >
+        </activity>
+        <activity
+            android:name="com.geoio.osmhunter.app.NearbyBuildingsActivity"
+            android:label="@string/title_activity_nearby_buildings"
+            android:uiOptions="splitActionBarWhenNarrow"
             android:parentActivityName="com.geoio.osmhunter.app.MainActivity" >
         </activity>
     </application>

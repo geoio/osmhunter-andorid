@@ -2,10 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.geoio.osmhunter.app.AttributeChangeActivity">
+    tools:context="com.geoio.osmhunter.app.MapActivity">
 
-    <fragment android:name="com.geoio.osmhunter.app.Fragments.AttributeChangeFragment"
-        android:id="@+id/editor"
+    <com.geoio.osmhunter.app.Workarounds.MyMapView
+        android:id="@+id/mapview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

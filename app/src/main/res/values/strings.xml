@@ -16,6 +16,7 @@
     <string name="attribute_change_save">Save attributes</string>
     <string name="attribute_prefilled_indicator">This field is automatically prefilled. Please validate the data.</string>
     <string name="attribute_change_nothing_changed">Please change any field before saving!</string>
+    <string name="attribute_change_finished">Attributes saved!</string>
     <string name="title_activity_map">Discover</string>
     <string name="map_location">My location</string>
 

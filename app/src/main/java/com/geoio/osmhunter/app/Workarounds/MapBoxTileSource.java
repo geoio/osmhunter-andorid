@@ -5,12 +5,12 @@
 
 package com.geoio.osmhunter.app.Workarounds;
 
+import android.content.Context;
+
 import org.osmdroid.ResourceProxy;
 import org.osmdroid.tileprovider.MapTile;
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
 import org.osmdroid.tileprovider.util.ManifestUtil;
-
-import android.content.Context;
 
 public class MapBoxTileSource extends OnlineTileSourceBase
 {

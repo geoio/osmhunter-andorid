@@ -5,23 +5,23 @@ import android.accounts.AccountManagerCallback;
 import android.accounts.AccountManagerFuture;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
-import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
 
 import com.geoio.osmhunter.app.R;
 
 import java.io.IOException;
 
-public class HunterActivity extends Activity {
+public class HunterActivity extends FragmentActivity {
 
-    public Bundle user;
-    public Boolean accountReady = false;
+    public static Bundle user;
+    public static Boolean accountReady = false;
     private AccountManager am;
     private String account_type;
 
-    public Resources res;
+    public static Resources res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

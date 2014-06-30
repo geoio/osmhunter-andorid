@@ -1,11 +1,10 @@
 package com.geoio.osmhunter.app.Workarounds;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.view.MotionEvent;
 
-import com.geoio.osmhunter.app.AttributeChangeActivity;
+import com.geoio.osmhunter.app.Fragments.MapFragment;
 import com.geoio.osmhunter.app.R;
 
 import org.json.JSONException;
@@ -22,16 +21,18 @@ public class HouseOverlay extends Polygon {
     private Context context;
     private Resources res;
     private MapView mapView;
+    private MapFragment.OnHouseSelectedListener listener;
 
     public ArrayList<GeoPoint> points = new ArrayList<GeoPoint>();
 
-    public HouseOverlay(MapView mv, JSONObject h) {
+    public HouseOverlay(MapView mv, JSONObject h, MapFragment.OnHouseSelectedListener l) {
         super(mv.getContext());
 
         house = h;
         context = mv.getContext();
         res = context.getResources();
         mapView = mv;
+        listener = l;
 
         this.setFillColor(res.getColor(R.color.map_building_background));
         this.setStrokeColor(res.getColor(R.color.map_building_border));
@@ -57,13 +58,16 @@ public class HouseOverlay extends Polygon {
             GeoPoint position = (GeoPoint)pj.fromPixels((int)event.getX(), (int)event.getY());
             try {
                 JSONObject centroid = house.getJSONObject("centroid");
-                Intent intent = new Intent(context, AttributeChangeActivity.class);
+                if(listener != null) {
+                    listener.onHouseSelected(house.getString("id"), centroid.getString("lat"), centroid.getString("lon"));
+                }
+                /*Intent intent = new Intent(context, AttributeChangeActivity.class);
 
                 intent.putExtra("id", house.getString("id"));
                 intent.putExtra("lat", centroid.getString("lat"));
                 intent.putExtra("lon", centroid.getString("lon"));
 
-                context.startActivity(intent);
+                context.startActivity(intent);*/
             } catch (JSONException e) {
                 e.printStackTrace();
             }
