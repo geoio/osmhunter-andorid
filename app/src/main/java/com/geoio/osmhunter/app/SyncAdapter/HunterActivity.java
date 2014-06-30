@@ -8,6 +8,7 @@ import android.accounts.OperationCanceledException;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.geoio.osmhunter.app.R;
 
@@ -36,6 +37,16 @@ public class HunterActivity extends Activity {
     protected void onResume() {
         super.onResume();
         accountGet();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**

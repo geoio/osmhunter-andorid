@@ -98,10 +98,6 @@ public class AttributeChangeActivity extends HunterActivity {
                 }
 
                 return true;
-
-            case android.R.id.home:
-                finish();
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -80,10 +80,6 @@ public class MapActivity extends HunterActivity {
                     mapView.getController().animateTo(myLocationOverlay.getMyLocation());
                 }
                 return true;
-
-            case android.R.id.home:
-                finish();
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }
