@@ -2,6 +2,7 @@ package com.geoio.osmhunter.app;
 
 import android.accounts.AccountManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,6 +26,8 @@ import org.json.JSONObject;
 
 public class MainActivity extends HunterActivity {
 
+    private SharedPreferences cache;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +36,9 @@ public class MainActivity extends HunterActivity {
 
         // user info loading
         setProgressBarIndeterminateVisibility(true);
+
+        // user info caching
+        cache = getPreferences(MODE_PRIVATE);
 
         Button button_discover = (Button) findViewById(R.id.button_discover);
         button_discover.setOnClickListener(new View.OnClickListener() {
@@ -83,10 +89,29 @@ public class MainActivity extends HunterActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void setAccountInfo() {
+        final ImageView imageView = (ImageView) findViewById(R.id.avatar);
+        final TextView usernameView = (TextView) findViewById(R.id.username);
+        final TextView pointsView = (TextView) findViewById(R.id.points);
+
+        if(cache.contains("username") && cache.contains("image") && cache.contains("points")) {
+            Picasso.with(getApplicationContext()).load(cache.getString("image", null)).into(imageView);
+
+            usernameView.setText(cache.getString("username", null));
+
+            int points = cache.getInt("points", 0);
+            pointsView.setText(res.getQuantityString(R.plurals.points, points, points));
+        }
+    }
+
     @Override
     public void accountReady() {
         Uri.Builder b = Uri.parse(getString(R.string.geoio_api_url)).buildUpon();
         AsyncHttpClient client = new AsyncHttpClient();
+        final SharedPreferences.Editor cacheEditor = cache.edit();
+
+        // check if we have cached user information
+        setAccountInfo();
 
         // build url
         b.appendPath("user");
@@ -111,16 +136,13 @@ public class MainActivity extends HunterActivity {
                     }
 
                     JSONObject result = response.getJSONObject("result");
-                    Integer points = result.getInt("points");
 
-                    ImageView imageView = (ImageView) findViewById(R.id.avatar);
-                    TextView usernameView = (TextView) findViewById(R.id.username);
-                    TextView pointsView = (TextView) findViewById(R.id.points);
+                    cacheEditor.putString("username", result.getString("display_name"));
+                    cacheEditor.putString("image", result.getString("image"));
+                    cacheEditor.putInt("points", result.getInt("points"));
 
-                    Picasso.with(getApplicationContext()).load(result.getString("image")).into(imageView);
-                    usernameView.setText(result.getString("display_name"));
-
-                    pointsView.setText(res.getQuantityString(R.plurals.points, points, points));
+                    cacheEditor.commit();
+                    setAccountInfo();
 
                     setProgressBarIndeterminateVisibility(false);
                 } catch (JSONException e) {
