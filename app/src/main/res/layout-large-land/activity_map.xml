@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,15 +6,22 @@
 
     <fragment android:name="com.geoio.osmhunter.app.Fragments.MapFragment"
         android:id="@+id/map"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
         tools:layout="@layout/fragment_map" />
 
-    <fragment android:name="com.geoio.osmhunter.app.Fragments.AttributeChangeFragment"
-        android:id="@+id/editor"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+    <RelativeLayout
+        android:id="@+id/editor_layout"
+        android:layout_width="@dimen/activity_map_editor_width"
+        android:layout_height="fill_parent"
+        android:layout_gravity="right"
+        android:background="@android:color/white"
+        android:translationX="@dimen/activity_map_editor_width">
 
-</LinearLayout>
+        <fragment android:name="com.geoio.osmhunter.app.Fragments.AttributeChangeFragment"
+            android:id="@+id/editor"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+
+</FrameLayout>

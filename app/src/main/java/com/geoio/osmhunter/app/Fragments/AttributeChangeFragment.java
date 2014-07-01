@@ -1,6 +1,7 @@
 package com.geoio.osmhunter.app.Fragments;
 
 import android.accounts.AccountManager;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -21,9 +22,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.geoio.osmhunter.app.Workarounds.FormField;
 import com.geoio.osmhunter.app.R;
 import com.geoio.osmhunter.app.SyncAdapter.HunterActivity;
+import com.geoio.osmhunter.app.Workarounds.FormField;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -50,7 +51,8 @@ public class AttributeChangeFragment extends Fragment {
     private HunterActivity ac;
     private View view;
 
-    public boolean onlyFragment = true;
+    public boolean onlyFragment = false;
+    public OnAttributesSavedListener listener;
 
     @Override
     public View onCreateView(LayoutInflater inf, ViewGroup container, Bundle savedInstanceState) {
@@ -94,6 +96,23 @@ public class AttributeChangeFragment extends Fragment {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public interface OnAttributesSavedListener {
+        public void onAttributesSaved();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if(activity instanceof OnAttributesSavedListener) {
+            listener = (OnAttributesSavedListener) activity;
+        }
+    }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
     }
 
     private void saveForm() {
@@ -153,6 +172,7 @@ public class AttributeChangeFragment extends Fragment {
             b.appendPath("buildings");
             b.appendPath(id);
             b.appendQueryParameter("apikey", ac.user.getString(AccountManager.KEY_AUTHTOKEN));
+            //b.appendQueryParameter("dryrun", "true");
             String url = b.build().toString();
 
             try {
@@ -179,6 +199,9 @@ public class AttributeChangeFragment extends Fragment {
 
                         if(onlyFragment) {
                             getActivity().finish();
+                        }
+                        if(listener != null) {
+                            listener.onAttributesSaved();
                         }
                     }
                 });
