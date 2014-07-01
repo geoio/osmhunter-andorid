@@ -143,7 +143,6 @@ public class MapFragment extends Fragment {
         b.appendQueryParameter("west", String.valueOf(l1.getLongitude()));
         b.appendQueryParameter("north", String.valueOf(l2.getLatitude()));
         b.appendQueryParameter("east", String.valueOf(l2.getLongitude()));
-        b.appendQueryParameter("limit", getString(R.integer.geoio_api_buildings_per_request));
         String url = b.build().toString();
 
         // fire http
