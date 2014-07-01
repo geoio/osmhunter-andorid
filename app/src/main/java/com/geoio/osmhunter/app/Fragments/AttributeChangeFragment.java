@@ -18,6 +18,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +53,8 @@ public class AttributeChangeFragment extends Fragment {
     private MenuItem saveButton;
     private HunterActivity ac;
     private View view;
+    private ScrollView mListLayout;
+    private ProgressBar mProgress;
 
     public boolean onlyFragment = false;
     public OnAttributesSavedListener listener;
@@ -61,6 +66,8 @@ public class AttributeChangeFragment extends Fragment {
 
         inflater = inf;
         list_layout = (LinearLayout) view.findViewById(R.id.list);
+        mListLayout = (ScrollView) view.findViewById(R.id.list_layout);
+        mProgress = (ProgressBar) view.findViewById(R.id.loading_spinner);
 
         setHasOptionsMenu(true);
 
@@ -226,7 +233,9 @@ public class AttributeChangeFragment extends Fragment {
         Uri.Builder b = Uri.parse(getString(R.string.geoio_api_url)).buildUpon();
         AsyncHttpClient client = new AsyncHttpClient();
 
-        getActivity().setProgressBarIndeterminateVisibility(true);
+        // all the loading indicators!
+        mListLayout.animate().alpha(0f).start();
+        mProgress.animate().alpha(1f).start();
 
         // remove all old views
         formFields.clear();
@@ -323,7 +332,8 @@ public class AttributeChangeFragment extends Fragment {
                             }
                         }
 
-                        getActivity().setProgressBarIndeterminateVisibility(false);
+                        mListLayout.animate().alpha(1f).start();
+                        mProgress.animate().alpha(0f).start();
 
                         list_layout.addView(elem);
                         list_layout.invalidate();
