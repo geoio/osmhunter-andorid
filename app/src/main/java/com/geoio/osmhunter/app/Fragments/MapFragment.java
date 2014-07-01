@@ -32,6 +32,8 @@ import org.osmdroid.events.ZoomEvent;
 import org.osmdroid.util.BoundingBoxE6;
 import org.osmdroid.util.GeoPoint;
 
+import java.util.ArrayList;
+
 
 public class MapFragment extends Fragment {
 
@@ -39,6 +41,7 @@ public class MapFragment extends Fragment {
     public UserLocationOverlay myLocationOverlay;
     public HunterActivity ac;
     public OnHouseSelectedListener listener;
+    private ArrayList<String> drawnBuildings = new ArrayList<String>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -160,6 +163,12 @@ public class MapFragment extends Fragment {
                     for(int i = 0; i < results.length(); i++) {
                         JSONObject result = results.getJSONObject(i);
                         JSONArray nodes = result.getJSONArray("nodes");
+
+                        String id = result.getString("id");
+                        if(drawnBuildings.contains(id)) {
+                            return;
+                        }
+                        drawnBuildings.add(id);
 
                         HouseOverlay poly = new HouseOverlay(mapView, result, listener);
 
