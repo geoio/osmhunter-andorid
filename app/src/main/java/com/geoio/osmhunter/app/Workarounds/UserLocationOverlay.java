@@ -22,7 +22,9 @@ public class UserLocationOverlay extends MyLocationNewOverlay {
         // fast fix: get the last known location
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         Location lastKnownLocation = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        mapView.getController().setCenter(new GeoPoint(lastKnownLocation));
+        if(lastKnownLocation != null) {
+            mapView.getController().setCenter(new GeoPoint(lastKnownLocation));
+        }
     }
 
     @Override
