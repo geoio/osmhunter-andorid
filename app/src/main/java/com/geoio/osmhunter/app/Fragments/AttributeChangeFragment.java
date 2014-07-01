@@ -262,7 +262,7 @@ public class AttributeChangeFragment extends Fragment {
                         FormField field = null;
 
                         if(type.equals("select")) {
-                            elem = inflater.inflate(R.layout.activity_attribute_change_item_spinner, null);
+                            elem = inflater.inflate(R.layout.fragment_attribute_change_item_spinner, null);
                             field = new FormField(attribute, elem);
 
                             TextView label = (TextView) elem.findViewById(R.id.label);
@@ -294,7 +294,7 @@ public class AttributeChangeFragment extends Fragment {
                             spinner.setAdapter(adapter);
                             spinner.setSelection(selected);
                         } else {
-                            elem = inflater.inflate(R.layout.activity_attribute_change_item_text, null);
+                            elem = inflater.inflate(R.layout.fragment_attribute_change_item_text, null);
                             field = new FormField(attribute, elem);
 
                             TextView label = (TextView) elem.findViewById(R.id.label);
