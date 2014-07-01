@@ -29,6 +29,7 @@ import java.util.List;
 
 public class NearbyBuildingsFragment extends MapFragment {
     private List<JSONObject> nearbyBuildings = new ArrayList<JSONObject>();
+    private List<HouseOverlay> nearbyBuildingOverlays = new ArrayList<HouseOverlay>();
     private Integer nearbyBuildingsNeedle = 0;
     private Integer nearbyBuildingsOffset = 0;
     private Boolean firstLoad = true;
@@ -111,7 +112,7 @@ public class NearbyBuildingsFragment extends MapFragment {
     }
 
     public interface OnBuildingChangeListener {
-        public void onBuildingChange(String id, String lat, String lon);
+        public void onBuildingChange(String id, String lat, String lon, HouseOverlay overlay);
     }
 
     @Override
@@ -138,10 +139,11 @@ public class NearbyBuildingsFragment extends MapFragment {
             JSONObject buildingCentroid = building.getJSONObject("centroid");
             GeoPoint centroid = new GeoPoint(buildingCentroid.getDouble("lat"), buildingCentroid.getDouble("lon"));
             currentBuilding = building;
+            HouseOverlay currentOverlay = nearbyBuildingOverlays.get(nearbyBuildingsNeedle);
 
             // call the AttributeChangeFragment
             if(listener != null) {
-                listener.onBuildingChange(building.getString("id"), buildingCentroid.getString("lat"), buildingCentroid.getString("lon"));
+                listener.onBuildingChange(building.getString("id"), buildingCentroid.getString("lat"), buildingCentroid.getString("lon"), currentOverlay);
             }
 
             DecimalFormat df = new DecimalFormat("0.### km");
@@ -205,13 +207,8 @@ public class NearbyBuildingsFragment extends MapFragment {
                 }
 
                 try {
-                    // read results into our ArrayList
                     JSONArray results = response.getJSONArray("results");
-                    for(int i = 0; i < results.length(); i++) {
-                        nearbyBuildings.add(results.getJSONObject(i));
-                    }
 
-                    // draw them
                     for(int i = 0; i < results.length(); i++) {
                         JSONObject result = results.getJSONObject(i);
                         JSONArray nodes = result.getJSONArray("nodes");
@@ -226,6 +223,8 @@ public class NearbyBuildingsFragment extends MapFragment {
                         }
 
                         poly.setPoints();
+                        nearbyBuildings.add(results.getJSONObject(i));
+                        nearbyBuildingOverlays.add(poly);
                         firstLoad = false;
                     }
 

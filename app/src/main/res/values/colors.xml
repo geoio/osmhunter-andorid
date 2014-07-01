@@ -6,4 +6,7 @@
 
     <color name="map_building_border">@color/geoio</color>
     <color name="map_building_background">#bcd6db</color>
+
+    <color name="map_building_selected_border">#ffcc0000</color>
+    <color name="map_building_selected_background">#ffff4444</color>
 </resources>

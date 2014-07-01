@@ -10,6 +10,7 @@ import android.view.Window;
 import com.geoio.osmhunter.app.Fragments.AttributeChangeFragment;
 import com.geoio.osmhunter.app.Fragments.MapFragment;
 import com.geoio.osmhunter.app.SyncAdapter.HunterActivity;
+import com.geoio.osmhunter.app.Workarounds.HouseOverlay;
 import com.geoio.osmhunter.app.Workarounds.MyMapView;
 
 
@@ -17,6 +18,7 @@ public class MapActivity extends HunterActivity implements MapFragment.OnHouseSe
     private View attributeFragmentLayout;
     private AttributeChangeFragment attributeFragment;
     private MyMapView mapView;
+    private HouseOverlay currentHouseOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,10 @@ public class MapActivity extends HunterActivity implements MapFragment.OnHouseSe
             mapView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
-                    attributeFragmentLayout.animate().translationX(res.getDimension(R.dimen.activity_map_editor_width)).start();
+                    if(currentHouseOverlay != null) {
+                        currentHouseOverlay.resetColors();
+                        attributeFragmentLayout.animate().translationX(res.getDimension(R.dimen.activity_map_editor_width)).start();
+                    }
                     return false;
                 }
             });
@@ -44,8 +49,11 @@ public class MapActivity extends HunterActivity implements MapFragment.OnHouseSe
     }
 
     @Override
-    public void onHouseSelected(String id, String lat, String lon) {
+    public void onHouseSelected(String id, String lat, String lon, HouseOverlay overlay) {
+        currentHouseOverlay = overlay;
+
         if(attributeFragment != null && attributeFragment.isInLayout()) {
+            currentHouseOverlay.highlight();
             attributeFragment.setBuilding(id, lat, lon);
             attributeFragmentLayout.animate().translationX(0).start();
         } else {
@@ -59,6 +67,7 @@ public class MapActivity extends HunterActivity implements MapFragment.OnHouseSe
 
     @Override
     public void onAttributesSaved() {
+        currentHouseOverlay.resetColors();
         attributeFragmentLayout.animate().translationX(res.getDimension(R.dimen.activity_map_editor_width)).start();
     }
 }

@@ -98,7 +98,7 @@ public class MapFragment extends Fragment {
     }
 
     public interface OnHouseSelectedListener {
-        public void onHouseSelected(String id, String lat, String lon);
+        public void onHouseSelected(String id, String lat, String lon, HouseOverlay overlay);
     }
 
     @Override

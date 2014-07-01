@@ -37,10 +37,7 @@ public class HouseOverlay extends Polygon {
         mapView = mv;
         listener = l;
 
-        this.setFillColor(res.getColor(R.color.map_building_background));
-        this.setStrokeColor(res.getColor(R.color.map_building_border));
-        this.setStrokeWidth(res.getInteger(R.integer.map_building_border_size));
-        this.mOutlinePaint.setAntiAlias(true);
+        resetColors();
     }
 
     public void addPoint(GeoPoint point) {
@@ -53,6 +50,20 @@ public class HouseOverlay extends Polygon {
         mapView.invalidate();
     }
 
+    public void resetColors() {
+        this.setFillColor(res.getColor(R.color.map_building_background));
+        this.setStrokeColor(res.getColor(R.color.map_building_border));
+        this.setStrokeWidth(res.getInteger(R.integer.map_building_border_size));
+        this.mOutlinePaint.setAntiAlias(true);
+        mapView.invalidate();
+    }
+
+    public void highlight() {
+        this.setFillColor(res.getColor(R.color.map_building_selected_background));
+        this.setStrokeColor(res.getColor(R.color.map_building_selected_border));
+        mapView.invalidate();
+    }
+
     @Override
     public boolean onSingleTapConfirmed(final MotionEvent event, final MapView mapView) {
         boolean touched = contains(event, mapView);
@@ -62,7 +73,7 @@ public class HouseOverlay extends Polygon {
             try {
                 JSONObject centroid = house.getJSONObject("centroid");
                 if(listener != null) {
-                    listener.onHouseSelected(house.getString("id"), centroid.getString("lat"), centroid.getString("lon"));
+                    listener.onHouseSelected(house.getString("id"), centroid.getString("lat"), centroid.getString("lon"), this);
                 } else {
                     Intent intent = new Intent(context, AttributeChangeActivity.class);
 
