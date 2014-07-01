@@ -6,6 +6,7 @@ import android.view.MotionEvent;
 
 import com.geoio.osmhunter.app.Fragments.MapFragment;
 import com.geoio.osmhunter.app.R;
+import com.joshdholtz.sentry.Sentry;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,6 +70,7 @@ public class HouseOverlay extends Polygon {
 
                 context.startActivity(intent);*/
             } catch (JSONException e) {
+                Sentry.captureException(e);
                 e.printStackTrace();
             }
         }

@@ -1,5 +1,6 @@
 package com.geoio.osmhunter.app.Fragments;
 
+import android.accounts.AccountManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.Menu;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 import com.geoio.osmhunter.app.AttributeChangeActivity;
 import com.geoio.osmhunter.app.R;
 import com.geoio.osmhunter.app.Workarounds.HouseOverlay;
+import com.joshdholtz.sentry.Sentry;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -78,6 +80,7 @@ public class NearbyBuildingsFragment extends MapFragment {
                         startActivity(intent);
                     }
                 } catch (JSONException e) {
+                    Sentry.captureException(e);
                     e.printStackTrace();
                 }
 
@@ -95,6 +98,7 @@ public class NearbyBuildingsFragment extends MapFragment {
 
                     getActivity().startActivity(intent);
                 } catch (JSONException e) {
+                    Sentry.captureException(e);
                     e.printStackTrace();
                 }
 
@@ -125,6 +129,7 @@ public class NearbyBuildingsFragment extends MapFragment {
 
             mapView.getController().animateTo(centroid);
         } catch (JSONException e) {
+            Sentry.captureException(e);
             e.printStackTrace();
         }
     }
@@ -164,6 +169,12 @@ public class NearbyBuildingsFragment extends MapFragment {
         client.get(url, null, new JsonHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Sentry.captureEvent(new Sentry.SentryEventBuilder()
+                                .setMessage(String.format("%s, %s", ac.user.getString(AccountManager.KEY_ACCOUNT_NAME), responseString))
+                                .setCulprit(getActivity().getClass().getName())
+                                .setTimestamp(System.currentTimeMillis())
+                );
+
                 Toast toast = Toast.makeText(getActivity(), getString(R.string.error_api), Toast.LENGTH_LONG);
                 toast.show();
             }
@@ -208,6 +219,7 @@ public class NearbyBuildingsFragment extends MapFragment {
                     }
 
                 } catch (JSONException e) {
+                    Sentry.captureException(e);
                     e.printStackTrace();
                 }
             }

@@ -1,5 +1,6 @@
 package com.geoio.osmhunter.app.Fragments;
 
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.Fragment;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import com.geoio.osmhunter.app.Workarounds.HouseOverlay;
 import com.geoio.osmhunter.app.Workarounds.MapBoxTileSource;
 import com.geoio.osmhunter.app.Workarounds.MyMapView;
 import com.geoio.osmhunter.app.Workarounds.UserLocationOverlay;
+import com.joshdholtz.sentry.Sentry;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -149,6 +151,12 @@ public class MapFragment extends Fragment {
         client.get(url, null, new JsonHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Sentry.captureEvent(new Sentry.SentryEventBuilder()
+                                .setMessage(String.format("%s, %s", ac.user.getString(AccountManager.KEY_ACCOUNT_NAME), responseString))
+                                .setCulprit(getActivity().getClass().getName())
+                                .setTimestamp(System.currentTimeMillis())
+                );
+
                 Toast toast = Toast.makeText(getActivity(), getString(R.string.error_api), Toast.LENGTH_LONG);
                 toast.show();
             }
@@ -187,6 +195,7 @@ public class MapFragment extends Fragment {
                     getActivity().setProgressBarIndeterminateVisibility(false);
 
                 } catch (JSONException e) {
+                    Sentry.captureException(e);
                     e.printStackTrace();
                 }
             }

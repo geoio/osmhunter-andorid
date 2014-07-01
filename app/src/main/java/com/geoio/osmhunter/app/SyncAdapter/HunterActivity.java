@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
 
 import com.geoio.osmhunter.app.R;
+import com.joshdholtz.sentry.Sentry;
 
 import java.io.IOException;
 
@@ -26,6 +27,8 @@ public class HunterActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Sentry.init(this, getString(R.string.sentry_url), getString(R.string.sentry_dsn));
 
         am = AccountManager.get(this);
         account_type = this.getString(R.string.authenticator_account_type);
@@ -68,14 +71,16 @@ public class HunterActivity extends FragmentActivity {
                 try {
                     user = future.getResult();
                     accountReady = true;
-
                     accountReady();
 
                 } catch (OperationCanceledException e) {
+                    Sentry.captureException(e);
                     e.printStackTrace();
                 } catch (IOException e) {
+                    Sentry.captureException(e);
                     e.printStackTrace();
                 } catch (AuthenticatorException e) {
+                    Sentry.captureException(e);
                     e.printStackTrace();
                 }
             }

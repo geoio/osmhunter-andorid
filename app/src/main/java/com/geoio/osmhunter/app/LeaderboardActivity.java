@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.geoio.osmhunter.app.SyncAdapter.HunterActivity;
+import com.joshdholtz.sentry.Sentry;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
@@ -118,6 +119,12 @@ public class LeaderboardActivity extends HunterActivity {
         client.get(url, null, new JsonHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Sentry.captureEvent(new Sentry.SentryEventBuilder()
+                                .setMessage(String.format("%s, %s", user.getString(AccountManager.KEY_ACCOUNT_NAME), responseString))
+                                .setCulprit(this.getClass().getName())
+                                .setTimestamp(System.currentTimeMillis())
+                );
+
                 Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.error_api), Toast.LENGTH_LONG);
                 toast.show();
             }
@@ -143,6 +150,7 @@ public class LeaderboardActivity extends HunterActivity {
                     listLeaderboardAdapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
+                    Sentry.captureException(e);
                     e.printStackTrace();
                 }
             }
@@ -198,6 +206,7 @@ public class LeaderboardActivity extends HunterActivity {
                 usernameView.setText(mUser.getString("username"));
                 pointsView.setText(res.getQuantityString(R.plurals.points, points, points));
             } catch (JSONException e) {
+                Sentry.captureException(e);
                 e.printStackTrace();
             }
 

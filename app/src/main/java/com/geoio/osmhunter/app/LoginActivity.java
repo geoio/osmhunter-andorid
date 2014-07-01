@@ -12,6 +12,7 @@ import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.joshdholtz.sentry.Sentry;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -68,6 +69,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
                     web.loadUrl(redirect_url);
 
                 } catch (JSONException e) {
+                    Sentry.captureException(e);
                     e.printStackTrace();
                 }
             }
@@ -150,14 +152,17 @@ public class LoginActivity extends AccountAuthenticatorActivity {
                                     finishAuthentication(intent);
 
                                 } catch (JSONException e) {
+                                    Sentry.captureException(e);
                                     e.printStackTrace();
                                 }
                             }
                         });
 
                     } catch (UnsupportedEncodingException e) {
+                        Sentry.captureException(e);
                         e.printStackTrace();
                     } catch (JSONException e) {
+                        Sentry.captureException(e);
                         e.printStackTrace();
                     }
                 }

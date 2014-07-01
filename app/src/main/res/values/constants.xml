@@ -6,6 +6,9 @@
     <integer name="geoio_api_buildings_per_request">10</integer>
     <integer name="geoio_api_buildings_nearby_radius">2000</integer>
 
+    <string name="sentry_url">http://sentry.happy-bits.com/</string>
+    <string name="sentry_dsn"></string>
+
     <string name="geoio_about_url">http://geo.io/pages/imprint/</string>
 
     <integer name="map_initial_zoom">19</integer>

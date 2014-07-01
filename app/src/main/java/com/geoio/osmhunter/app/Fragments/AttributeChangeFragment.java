@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -28,6 +27,7 @@ import android.widget.Toast;
 import com.geoio.osmhunter.app.R;
 import com.geoio.osmhunter.app.SyncAdapter.HunterActivity;
 import com.geoio.osmhunter.app.Workarounds.FormField;
+import com.joshdholtz.sentry.Sentry;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -133,6 +133,7 @@ public class AttributeChangeFragment extends Fragment {
             payload.put("tags", new JSONObject());
             tags = payload.getJSONObject("tags");
         } catch (JSONException e) {
+            Sentry.captureException(e);
             e.printStackTrace();
         }
 
@@ -164,6 +165,7 @@ public class AttributeChangeFragment extends Fragment {
                                 tags.put(options.getString("name"), textView.getText());
                 }
             } catch (JSONException e) {
+                Sentry.captureException(e);
                 e.printStackTrace();
             }
         }
@@ -174,11 +176,12 @@ public class AttributeChangeFragment extends Fragment {
             Uri.Builder b = Uri.parse(getString(R.string.geoio_api_url)).buildUpon();
             AsyncHttpClient client = new AsyncHttpClient();
             ByteArrayEntity entity;
+            final String apikey = ac.user.getString(AccountManager.KEY_AUTHTOKEN);
 
             // build url
             b.appendPath("buildings");
             b.appendPath(id);
-            b.appendQueryParameter("apikey", ac.user.getString(AccountManager.KEY_AUTHTOKEN));
+            b.appendQueryParameter("apikey", apikey);
             //b.appendQueryParameter("dryrun", "true");
             String url = b.build().toString();
 
@@ -189,6 +192,12 @@ public class AttributeChangeFragment extends Fragment {
                 client.put(getActivity(), url, entity, "application/json", new JsonHttpResponseHandler() {
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        Sentry.captureEvent(new Sentry.SentryEventBuilder()
+                                .setMessage(String.format("%s, %s", ac.user.getString(AccountManager.KEY_ACCOUNT_NAME), responseString))
+                                .setCulprit(getActivity().getClass().getName())
+                                .setTimestamp(System.currentTimeMillis())
+                        );
+
                         Toast toast = Toast.makeText(getActivity(), getString(R.string.error_api), Toast.LENGTH_LONG);
                         toast.show();
 
@@ -213,6 +222,7 @@ public class AttributeChangeFragment extends Fragment {
                     }
                 });
             } catch (UnsupportedEncodingException e) {
+                Sentry.captureException(e);
                 e.printStackTrace();
             }
         } else {
@@ -252,6 +262,12 @@ public class AttributeChangeFragment extends Fragment {
         client.get(url, null, new JsonHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Sentry.captureEvent(new Sentry.SentryEventBuilder()
+                                .setMessage(String.format("%s, %s", ac.user.getString(AccountManager.KEY_ACCOUNT_NAME), responseString))
+                                .setCulprit(getActivity().getClass().getName())
+                                .setTimestamp(System.currentTimeMillis())
+                );
+
                 Toast toast = Toast.makeText(getActivity(), getString(R.string.error_api), Toast.LENGTH_LONG);
                 toast.show();
             }
@@ -341,6 +357,7 @@ public class AttributeChangeFragment extends Fragment {
                     }
 
                 } catch (JSONException e) {
+                    Sentry.captureException(e);
                     e.printStackTrace();
                 }
             }
