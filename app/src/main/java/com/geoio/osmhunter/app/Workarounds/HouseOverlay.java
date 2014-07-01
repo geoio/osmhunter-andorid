@@ -1,9 +1,11 @@
 package com.geoio.osmhunter.app.Workarounds;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.view.MotionEvent;
 
+import com.geoio.osmhunter.app.AttributeChangeActivity;
 import com.geoio.osmhunter.app.Fragments.MapFragment;
 import com.geoio.osmhunter.app.R;
 import com.joshdholtz.sentry.Sentry;
@@ -61,14 +63,15 @@ public class HouseOverlay extends Polygon {
                 JSONObject centroid = house.getJSONObject("centroid");
                 if(listener != null) {
                     listener.onHouseSelected(house.getString("id"), centroid.getString("lat"), centroid.getString("lon"));
+                } else {
+                    Intent intent = new Intent(context, AttributeChangeActivity.class);
+
+                    intent.putExtra("id", house.getString("id"));
+                    intent.putExtra("lat", centroid.getString("lat"));
+                    intent.putExtra("lon", centroid.getString("lon"));
+
+                    context.startActivity(intent);
                 }
-                /*Intent intent = new Intent(context, AttributeChangeActivity.class);
-
-                intent.putExtra("id", house.getString("id"));
-                intent.putExtra("lat", centroid.getString("lat"));
-                intent.putExtra("lon", centroid.getString("lon"));
-
-                context.startActivity(intent);*/
             } catch (JSONException e) {
                 Sentry.captureException(e);
                 e.printStackTrace();

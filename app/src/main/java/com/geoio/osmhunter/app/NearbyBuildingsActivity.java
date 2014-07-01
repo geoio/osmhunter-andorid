@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.view.Window;
 
 import com.geoio.osmhunter.app.Fragments.AttributeChangeFragment;
-import com.geoio.osmhunter.app.Fragments.MapFragment;
+import com.geoio.osmhunter.app.Fragments.NearbyBuildingsFragment;
 import com.geoio.osmhunter.app.SyncAdapter.HunterActivity;
 
 
-public class NearbyBuildingsActivity extends HunterActivity implements MapFragment.OnHouseSelectedListener {
+public class NearbyBuildingsActivity extends HunterActivity implements NearbyBuildingsFragment.OnBuildingChangeListener {
     private AttributeChangeFragment attributeFragment;
 
     @Override
@@ -25,10 +25,9 @@ public class NearbyBuildingsActivity extends HunterActivity implements MapFragme
     }
 
     @Override
-    public void onHouseSelected(String id, String lat, String lon) {
+    public void onBuildingChange(String id, String lat, String lon) {
         if(attributeFragment != null && attributeFragment.isInLayout()) {
             attributeFragment.setBuilding(id, lat, lon);
         }
     }
-
 }

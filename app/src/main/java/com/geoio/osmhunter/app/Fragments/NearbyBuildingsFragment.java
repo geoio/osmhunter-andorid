@@ -1,6 +1,7 @@
 package com.geoio.osmhunter.app.Fragments;
 
 import android.accounts.AccountManager;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.Menu;
@@ -35,6 +36,8 @@ public class NearbyBuildingsFragment extends MapFragment {
     private MenuItem navigateItem;
     private MenuItem editItem;
     private JSONObject currentBuilding;
+
+    public OnBuildingChangeListener listener;
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -107,6 +110,23 @@ public class NearbyBuildingsFragment extends MapFragment {
         return super.onOptionsItemSelected(item);
     }
 
+    public interface OnBuildingChangeListener {
+        public void onBuildingChange(String id, String lat, String lon);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if(activity instanceof OnBuildingChangeListener) {
+            listener = (OnBuildingChangeListener) activity;
+        }
+    }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
+    }
+
     private void scrollToNearby() {
         // load more if needed
         if(nearbyBuildingsNeedle == nearbyBuildings.size() -2) {
@@ -121,7 +141,7 @@ public class NearbyBuildingsFragment extends MapFragment {
 
             // call the AttributeChangeFragment
             if(listener != null) {
-                listener.onHouseSelected(building.getString("id"), buildingCentroid.getString("lat"), buildingCentroid.getString("lon"));
+                listener.onBuildingChange(building.getString("id"), buildingCentroid.getString("lat"), buildingCentroid.getString("lon"));
             }
 
             DecimalFormat df = new DecimalFormat("0.### km");
@@ -196,7 +216,7 @@ public class NearbyBuildingsFragment extends MapFragment {
                         JSONObject result = results.getJSONObject(i);
                         JSONArray nodes = result.getJSONArray("nodes");
 
-                        HouseOverlay poly = new HouseOverlay(mapView, result, listener);
+                        HouseOverlay poly = new HouseOverlay(mapView, result, null);
 
                         for(int ii = 0; ii < nodes.length(); ii++) {
                             double lat = nodes.getJSONObject(ii).getDouble("lat");
