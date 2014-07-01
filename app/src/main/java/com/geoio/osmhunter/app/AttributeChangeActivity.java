@@ -16,7 +16,11 @@ public class AttributeChangeActivity extends HunterActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+        // stop the activity if the user rotates the screen of his tablet
+        int screenLayout = getResources().getConfiguration().screenLayout;
+        screenLayout &= Configuration.SCREENLAYOUT_SIZE_MASK;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && screenLayout == Configuration.SCREENLAYOUT_SIZE_LARGE) {
             finish();
             return;
         }
