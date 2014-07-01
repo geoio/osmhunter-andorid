@@ -117,6 +117,9 @@ public class MapFragment extends Fragment {
     public void updateShapesOverlay() {
         // minimum zoomlevel
         if(mapView.getZoomLevel() < ac.res.getInteger(R.integer.geoio_api_min_zoom)) {
+            Toast toast = Toast.makeText(getActivity(), getString(R.string.error_zoom), Toast.LENGTH_LONG);
+            toast.show();
+
             return;
         }
 

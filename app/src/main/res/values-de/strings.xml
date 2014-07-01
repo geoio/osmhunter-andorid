@@ -11,6 +11,7 @@
 
     <string name="error_api">API Request fehlgeschlagen.</string>
     <string name="error_api_authorization">API Authorisierung fehlgeschlagen.</string>
+    <string name="error_zoom">Reinzoomen um Häuser zu sehen.</string>
 
     <string name="title_activity_login">Anmelden</string>
     <string name="title_activity_leaderboard">Rangliste</string>
