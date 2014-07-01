@@ -55,6 +55,7 @@ public class AttributeChangeFragment extends Fragment {
     private View view;
     private ScrollView mListLayout;
     private ProgressBar mProgress;
+    private AsyncHttpClient client = new AsyncHttpClient();
 
     public boolean onlyFragment = false;
     public OnAttributesSavedListener listener;
@@ -241,16 +242,13 @@ public class AttributeChangeFragment extends Fragment {
 
     private void updateAttributesList(final String id) {
         Uri.Builder b = Uri.parse(getString(R.string.geoio_api_url)).buildUpon();
-        AsyncHttpClient client = new AsyncHttpClient();
 
         // all the loading indicators!
         mListLayout.animate().alpha(0f).start();
         mProgress.animate().alpha(1f).start();
 
-        // remove all old views
-        formFields.clear();
-        list_layout.removeAllViews();
-        list_layout.invalidate();
+        // kill previous handlers
+        client.cancelAllRequests(true);
 
         // build url
         b.appendPath("buildings");
@@ -259,7 +257,7 @@ public class AttributeChangeFragment extends Fragment {
         String url = b.build().toString();
 
         // fire http
-        client.get(url, null, new JsonHttpResponseHandler() {
+        client.get(url, new JsonHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Sentry.captureEvent(new Sentry.SentryEventBuilder()
@@ -279,6 +277,11 @@ public class AttributeChangeFragment extends Fragment {
 
                 try {
                     JSONArray result = response.getJSONArray("result");
+
+                    // remove all old views
+                    formFields.clear();
+                    list_layout.removeAllViews();
+                    list_layout.invalidate();
 
                     for(int i = 0; i < result.length(); i++) {
                         JSONObject attribute = result.getJSONObject(i);
@@ -348,9 +351,11 @@ public class AttributeChangeFragment extends Fragment {
                             }
                         }
 
+                        // yay, remove the loading animation
                         mListLayout.animate().alpha(1f).start();
                         mProgress.animate().alpha(0f).start();
 
+                        // add new
                         list_layout.addView(elem);
                         list_layout.invalidate();
                         formFields.add(field);
