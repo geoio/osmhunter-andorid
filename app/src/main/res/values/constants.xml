@@ -7,7 +7,7 @@
     <integer name="geoio_api_buildings_nearby_radius">2000</integer>
 
     <string name="sentry_url">http://sentry.happy-bits.com/</string>
-    <string name="sentry_dsn"></string>
+    <string name="sentry_dsn">http://9ffa55ef4d004fe1b4c9636ea30e8deb:366e0d996ca24030a4a3c75b08300ba0@sentry.happy-bits.com/15</string>
 
     <string name="geoio_about_url">http://geo.io/pages/imprint/</string>
 

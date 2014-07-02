@@ -8,6 +8,7 @@
     </style>
 
     <style name="AppActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:icon">@drawable/ic_action_name</item>
         <item name="android:background">@color/geoio</item>
         <item name="android:backgroundSplit">@color/geoio</item>
         <item name="android:titleTextStyle">@style/AppActionBarTitle</item>
