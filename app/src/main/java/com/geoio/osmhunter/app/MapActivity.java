@@ -2,6 +2,7 @@ package com.geoio.osmhunter.app;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,6 +13,8 @@ import com.geoio.osmhunter.app.Fragments.MapFragment;
 import com.geoio.osmhunter.app.SyncAdapter.HunterActivity;
 import com.geoio.osmhunter.app.Workarounds.HouseOverlay;
 import com.geoio.osmhunter.app.Workarounds.MyMapView;
+
+import org.osmdroid.util.GeoPoint;
 
 
 public class MapActivity extends HunterActivity implements MapFragment.OnHouseSelectedListener, AttributeChangeFragment.OnAttributesSavedListener {
@@ -54,6 +57,14 @@ public class MapActivity extends HunterActivity implements MapFragment.OnHouseSe
 
         if(attributeFragment != null && attributeFragment.isInLayout()) {
             currentHouseOverlay.highlight();
+
+            // move the map to prevent overlaying the building
+            GeoPoint pos = new GeoPoint(Double.parseDouble(lat), Double.parseDouble(lon));
+            Point posPixels = mapView.getProjection().toPixels(pos, null);
+            float mapWidth = mapView.getWidth() - attributeFragmentLayout.getWidth();
+            float newX = mapWidth/4 + posPixels.x;
+            mapView.getController().animateTo(mapView.getProjection().fromPixels(Math.round(newX), posPixels.y));
+
             attributeFragment.setBuilding(id, lat, lon);
             attributeFragmentLayout.animate().translationX(0).start();
         } else {
