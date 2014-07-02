@@ -28,7 +28,14 @@ public class HunterActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Sentry.init(this, getString(R.string.sentry_url), getString(R.string.sentry_dsn));
+
+        // A working Sentry shouldn't be a dependency of this project!
+        String dsn = getString(R.string.sentry_dsn);
+        if(dsn.length() == 0) {
+            dsn = "https://xx:xx@xx.xx/xx";
+        }
+        Sentry.init(this, getString(R.string.sentry_url), dsn);
+
 
         am = AccountManager.get(this);
         account_type = this.getString(R.string.authenticator_account_type);
