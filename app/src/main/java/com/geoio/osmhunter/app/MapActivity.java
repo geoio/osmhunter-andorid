@@ -36,14 +36,41 @@ public class MapActivity extends HunterActivity implements MapFragment.OnHouseSe
         attributeFragment = (AttributeChangeFragment) getSupportFragmentManager().findFragmentById(R.id.editor);
         mapView = (MyMapView) findViewById(R.id.mapview);
 
-        // hide the editor if the tablet user taps on the map
+        // editor touch-hide-logic …
         if(attributeFragment != null && attributeFragment.isInLayout()) {
             mapView.setOnTouchListener(new View.OnTouchListener() {
+                float tx = 0;
+                float dx = 0;
+                float offset = 0;
+
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
-                    if(currentHouseOverlay != null) {
-                        currentHouseOverlay.resetColors();
-                        attributeFragmentLayout.animate().translationX(res.getDimension(R.dimen.activity_map_editor_width)).start();
+                    if (currentHouseOverlay != null) {
+                        switch(motionEvent.getAction()) {
+                            case MotionEvent.ACTION_UP:
+                                if(offset > tx/2) {
+                                    mapView.locked = false;
+                                    currentHouseOverlay.resetColors();
+                                    currentHouseOverlay = null;
+                                    attributeFragmentLayout.animate().translationX(res.getDimension(R.dimen.activity_map_editor_width)).start();
+                                } else {
+                                    attributeFragmentLayout.animate().translationX(0).start();
+                                }
+                                break;
+
+                            case MotionEvent.ACTION_DOWN:
+                                mapView.locked = true;
+                                tx = attributeFragmentLayout.getTranslationX();
+                                dx = motionEvent.getX();
+                                break;
+
+                            case MotionEvent.ACTION_MOVE:
+                                offset = (motionEvent.getX() - dx) - tx;
+                                if(offset >= tx) {
+                                    attributeFragmentLayout.setTranslationX(offset);
+                                }
+                                break;
+                        }
                     }
                     return false;
                 }

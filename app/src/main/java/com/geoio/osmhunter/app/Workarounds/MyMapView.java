@@ -10,6 +10,7 @@ import org.osmdroid.views.MapView;
 public final class MyMapView extends MapView {
     private static final int IGNORE_MOVE_COUNT = 2;
     private int moveCount = 0;
+    public boolean locked = false;
 
     public MyMapView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -17,6 +18,10 @@ public final class MyMapView extends MapView {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        if(locked) {
+            return true;
+        }
+
         switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_MOVE:
 
